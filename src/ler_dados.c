@@ -1,12 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct {
-    char data_compra[9];
-    char cod_cliente[9];
-    char cod_produto[6];
-    char nome_produto[100];
-} RegistroCompra;
+#include "../include/ler_dados.h"
 
 int lerArquivo(char *caminho) {
     FILE *arquivo;
