@@ -1,0 +1,4 @@
+#ifndef LISTA_COMPRAS_H
+#define LISTA_COMPRAS_H
+
+#endif // LISTA_COMPRAS_H

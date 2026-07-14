@@ -1,0 +1,1 @@
+// Este módulo é responsável por organizar e armazenar o histórico de compras dos clientes
