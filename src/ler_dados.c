@@ -8,7 +8,7 @@ typedef struct {
     char nome_produto[100];
 } RegistroCompra;
 
-int main() {
+int ler() {
     FILE *arquivo;
     RegistroCompra registro;
 
