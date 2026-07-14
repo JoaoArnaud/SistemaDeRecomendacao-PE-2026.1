@@ -8,13 +8,12 @@ typedef struct {
     char nome_produto[100];
 } RegistroCompra;
 
-int ler() {
+int lerArquivo(char *caminho) {
     FILE *arquivo;
     RegistroCompra registro;
 
     // Abre arquivo CSV para leitura
-    //TODO: loop para abrir todos os arquivos de dados
-    arquivo = fopen("data/dados_venda_cluster_0.csv", "r");
+    arquivo = fopen(caminho, "r");
     if (arquivo == NULL) {
         perror("Erro ao abrir o arquivo");
         return 1;
