@@ -8,6 +8,11 @@ typedef struct {
     char nome_produto[100];
 } RegistroCompra;
 
-int lerArquivo(char *caminho);
+typedef struct {
+    RegistroCompra *registros;
+    int quantidade;
+} DadosCompras;
+
+DadosCompras lerArquivo(char *caminho);
 
 #endif // LER_DADOS_H
