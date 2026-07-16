@@ -34,3 +34,23 @@ ListaClientes codigosClientes(DadosCompras dados) {
 
     return lista;
 }
+
+MapaClientes mapaClientes(ListaClientes codigosClientes) {
+    MapaClientes mapa;
+
+    mapa.clientes = malloc(codigosClientes.quantidade * sizeof(MapaCliente));
+    mapa.quantidade = 0;
+
+    if (mapa.clientes == NULL) {
+        perror("Erro ao alocar memoria");
+        return mapa;
+    }
+
+    for (int i = 0; i < codigosClientes.quantidade; i++) {
+        strcpy(mapa.clientes[i].cod_cliente, codigosClientes.clientes[i].cod_cliente);
+        mapa.clientes[i].indice_interno = i;
+        mapa.quantidade++;
+    }
+
+    return mapa;
+}
