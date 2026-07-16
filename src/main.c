@@ -10,6 +10,7 @@ int main() {
     ListaProdutos produtos = nomesProdutos(dados);
     MapaClientes mapa = mapaClientes(clientes);
     MapaProdutos mapa_produtos = mapaProdutos(codigos_produtos);
+    ComprasPorCliente compras = comprasPorCliente(dados, mapa, mapa_produtos);
 
     printf("Quantidade de clientes na lista: %d\n", clientes.quantidade);
 
@@ -32,6 +33,22 @@ int main() {
         printf("%s -> %d\n", mapa_produtos.produtos[i].cod_produto, mapa_produtos.produtos[i].indice_interno);
     }
 
+    printf("\nCompras por cliente:\n");
+    for (int i = 0; i < compras.quantidade; i++) {
+        printf("Cliente %d: ", i);
+
+        for (int j = 0; j < compras.clientes[i].quantidade; j++) {
+            printf("%d", compras.clientes[i].produtos[j]);
+
+            if (j < compras.clientes[i].quantidade - 1) {
+                printf(", ");
+            }
+        }
+
+        printf("\n");
+    }
+
+    liberarComprasPorCliente(compras);
     free(mapa_produtos.produtos);
     free(mapa.clientes);
     free(produtos.produtos);

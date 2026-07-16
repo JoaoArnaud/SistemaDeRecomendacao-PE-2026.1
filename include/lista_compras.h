@@ -50,10 +50,23 @@ typedef struct {
     int quantidade;
 } MapaProdutos;
 
+typedef struct {
+    int *produtos;
+    int quantidade;
+    int capacidade;
+} ProdutosComprados;
+
+typedef struct {
+    ProdutosComprados *clientes;
+    int quantidade;
+} ComprasPorCliente;
+
 ListaClientes codigosClientes(DadosCompras dados);
 ListaCodigosProdutos codigosProdutos(DadosCompras dados);
 ListaProdutos nomesProdutos(DadosCompras dados);
 MapaClientes mapaClientes(ListaClientes codigosClientes);
 MapaProdutos mapaProdutos(ListaCodigosProdutos codigosProdutos);
+ComprasPorCliente comprasPorCliente(DadosCompras dados, MapaClientes mapaClientes, MapaProdutos mapaProdutos);
+void liberarComprasPorCliente(ComprasPorCliente compras);
 
 #endif // LISTA_COMPRAS_H

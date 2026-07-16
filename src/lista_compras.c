@@ -3,6 +3,26 @@
 #include <string.h>
 #include "../include/lista_compras.h"
 
+static int buscarIndiceCliente(MapaClientes mapa, char cod_cliente[9]) {
+    for (int i = 0; i < mapa.quantidade; i++) {
+        if (strcmp(mapa.clientes[i].cod_cliente, cod_cliente) == 0) {
+            return mapa.clientes[i].indice_interno;
+        }
+    }
+
+    return -1;
+}
+
+static int buscarIndiceProduto(MapaProdutos mapa, char cod_produto[6]) {
+    for (int i = 0; i < mapa.quantidade; i++) {
+        if (strcmp(mapa.produtos[i].cod_produto, cod_produto) == 0) {
+            return mapa.produtos[i].indice_interno;
+        }
+    }
+
+    return -1;
+}
+
 ListaClientes codigosClientes(DadosCompras dados) {
     ListaClientes lista;
 
@@ -117,6 +137,65 @@ MapaClientes mapaClientes(ListaClientes codigosClientes) {
     }
 
     return mapa;
+}
+
+ComprasPorCliente comprasPorCliente(DadosCompras dados, MapaClientes mapaClientes, MapaProdutos mapaProdutos) {
+    ComprasPorCliente compras;
+
+    compras.clientes = malloc(mapaClientes.quantidade * sizeof(ProdutosComprados));
+    compras.quantidade = mapaClientes.quantidade;
+
+    if (compras.clientes == NULL) {
+        perror("Erro ao alocar memoria");
+        compras.quantidade = 0;
+        return compras;
+    }
+
+    for (int i = 0; i < compras.quantidade; i++) {
+        compras.clientes[i].produtos = NULL;
+        compras.clientes[i].quantidade = 0;
+        compras.clientes[i].capacidade = 0;
+    }
+
+    for (int i = 0; i < dados.quantidade; i++) {
+        int indice_cliente = buscarIndiceCliente(mapaClientes, dados.registros[i].cod_cliente);
+        int indice_produto = buscarIndiceProduto(mapaProdutos, dados.registros[i].cod_produto);
+
+        if (indice_cliente == -1 || indice_produto == -1) {
+            continue;
+        }
+
+        ProdutosComprados *produtos_cliente = &compras.clientes[indice_cliente];
+
+        if (produtos_cliente->quantidade == produtos_cliente->capacidade) {
+            int nova_capacidade = produtos_cliente->capacidade == 0 ? 4 : produtos_cliente->capacidade * 2;
+            int *novo = realloc(produtos_cliente->produtos, nova_capacidade * sizeof(int));
+
+            if (novo == NULL) {
+                perror("Erro ao realocar memoria");
+                liberarComprasPorCliente(compras);
+                compras.clientes = NULL;
+                compras.quantidade = 0;
+                return compras;
+            }
+
+            produtos_cliente->produtos = novo;
+            produtos_cliente->capacidade = nova_capacidade;
+        }
+
+        produtos_cliente->produtos[produtos_cliente->quantidade] = indice_produto;
+        produtos_cliente->quantidade++;
+    }
+
+    return compras;
+}
+
+void liberarComprasPorCliente(ComprasPorCliente compras) {
+    for (int i = 0; i < compras.quantidade; i++) {
+        free(compras.clientes[i].produtos);
+    }
+
+    free(compras.clientes);
 }
 
 MapaProdutos mapaProdutos(ListaCodigosProdutos codigosProdutos) {
