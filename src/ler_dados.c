@@ -29,7 +29,7 @@ DadosCompras lerArquivo(char *caminho) {
     fscanf(arquivo, "%*[^\n]\n");
 
     // Lê cada linha do arquivo CSV
-    while (fscanf(arquivo, "%8[^;];%8[^;];%5[^;];%99[^\n]\n",
+    while (fscanf(arquivo, "%8[^;];%8[^;];%6[^;];%99[^\n]\n",
         registro.data_compra, 
         registro.cod_cliente, 
         registro.cod_produto, 
