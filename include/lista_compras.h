@@ -13,6 +13,15 @@ typedef struct {
 } ListaClientes;
 
 typedef struct {
+    char nome_produto[100];
+} NomeProduto;
+
+typedef struct {
+    NomeProduto *produtos;
+    int quantidade;
+} ListaProdutos;
+
+typedef struct {
     char cod_cliente[9];
     int indice_interno;
 } MapaCliente;
@@ -23,6 +32,7 @@ typedef struct {
 } MapaClientes;
 
 ListaClientes codigosClientes(DadosCompras dados);
+ListaProdutos nomesProdutos(DadosCompras dados);
 MapaClientes mapaClientes(ListaClientes codigosClientes);
 
 #endif // LISTA_COMPRAS_H

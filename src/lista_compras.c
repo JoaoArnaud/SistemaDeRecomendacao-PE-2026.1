@@ -35,6 +35,38 @@ ListaClientes codigosClientes(DadosCompras dados) {
     return lista;
 }
 
+ListaProdutos nomesProdutos(DadosCompras dados) {
+    ListaProdutos lista;
+
+    lista.produtos = malloc(dados.quantidade * sizeof(NomeProduto));
+    lista.quantidade = 0;
+
+    if (lista.produtos == NULL) {
+        perror("Erro ao alocar memoria");
+        return lista;
+    }
+
+    for (int i = 0; i < dados.quantidade; i++) {
+        int repetido = 0;
+
+        for (int j = 0; j < lista.quantidade; j++) {
+            if (strcmp(lista.produtos[j].nome_produto, dados.registros[i].nome_produto) == 0) {
+                repetido = 1;
+                break;
+            }
+        }
+
+        if (repetido) {
+            continue;
+        }
+
+        strcpy(lista.produtos[lista.quantidade].nome_produto, dados.registros[i].nome_produto);
+        lista.quantidade++;
+    }
+
+    return lista;
+}
+
 MapaClientes mapaClientes(ListaClientes codigosClientes) {
     MapaClientes mapa;
 
