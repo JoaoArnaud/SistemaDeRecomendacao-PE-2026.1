@@ -1,38 +1,39 @@
-CC = gcc
-CXX = g++
+CXX ?= g++
 
-CFLAGS = -Wall -Wextra -Iinclude
-CXXFLAGS = -Wall -Wextra -std=c++11 -Iinclude
+CPPFLAGS := -Iinclude
+CXXFLAGS := -std=c++11 -Wall -Wextra -Wpedantic
 
-BUILD = build
-PROGRAMA = $(BUILD)/programa
+BUILD_DIR := build
+TARGET := $(BUILD_DIR)/programa
 
-OBJETOS = \
-	$(BUILD)/main.o \
-	$(BUILD)/ler_dados.o \
-	$(BUILD)/lista_compras.o
+SOURCES := \
+	src/testador.cpp \
+	src/ListaCompras.cpp \
+	src/Similaridade.cpp \
+	src/Recomendacao.cpp
 
-all: $(PROGRAMA)
+OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
+DEPENDENCIES := $(OBJECTS:.o=.d)
 
-$(BUILD):
-	mkdir -p $(BUILD)
+.DEFAULT_GOAL := all
 
-$(BUILD)/main.o: src/main.c | $(BUILD)
-	$(CC) $(CFLAGS) -c src/main.c -o $(BUILD)/main.o
+all: $(TARGET)
 
-$(BUILD)/ler_dados.o: src/ler_dados.c | $(BUILD)
-	$(CC) $(CFLAGS) -c src/ler_dados.c -o $(BUILD)/ler_dados.o
+$(TARGET): $(OBJECTS)
+	$(CXX) $(OBJECTS) $(LDFLAGS) $(LDLIBS) -o $@
 
-$(BUILD)/lista_compras.o: src/lista_compras.cpp | $(BUILD)
-	$(CXX) $(CXXFLAGS) -c src/lista_compras.cpp -o $(BUILD)/lista_compras.o
+$(BUILD_DIR)/%.o: src/%.cpp | $(BUILD_DIR)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
-$(PROGRAMA): $(OBJETOS)
-	$(CXX) $(OBJETOS) -o $(PROGRAMA)
+$(BUILD_DIR):
+	mkdir -p $@
 
-run: $(PROGRAMA)
-	./$(PROGRAMA)
+run: $(TARGET)
+	./$(TARGET) $(if $(ARGS),$(ARGS),entrega1)
 
 clean:
-	rm -rf $(BUILD)
+	$(RM) -r $(BUILD_DIR)
+
+-include $(DEPENDENCIES)
 
 .PHONY: all run clean
