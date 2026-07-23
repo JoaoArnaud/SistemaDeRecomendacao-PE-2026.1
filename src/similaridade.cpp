@@ -44,16 +44,16 @@ void similaridade_monta_matriz_compras(Similaridade *similaridade, const ListaCo
     }
 }
 
-Matriz similaridade_transposta(Matriz a, int linhas, int colunas) {
-    Matriz t = (Matriz) malloc(colunas * sizeof(int *));
+Matriz getTransposta(Matriz a, int linhas, int colunas) {
+    Matriz transposta = (Matriz) malloc(colunas * sizeof(int *));
     for (int j = 0; j < colunas; j++) {
-        t[j] = (int *) calloc(linhas, sizeof(int));
+        transposta[j] = (int *) calloc(linhas, sizeof(int));
     }
 
     for (int i = 0; i < linhas; i++)
         for (int j = 0; j < colunas; j++)
-            t[j][i] = a[i][j];
-    return t;
+            transposta[j][i] = a[i][j];
+    return transposta;
 }
 
 Matriz similaridade_multiplica_matrizes(Matriz a, int linhas_a, int colunas_a, Matriz b, int colunas_b) {
@@ -72,7 +72,7 @@ Matriz similaridade_multiplica_matrizes(Matriz a, int linhas_a, int colunas_a, M
 void similaridade_calista_comprasula(Similaridade *similaridade, const ListaCompras *lista_compras) {
     similaridade_monta_matriz_compras(similaridade, lista_compras);
 
-    Matriz transposta = similaridade_transposta(similaridade->matriz_compras, similaridade->linha, similaridade->coluna);
+    Matriz transposta = getTransposta(similaridade->matriz_compras, similaridade->linha, similaridade->coluna);
     similaridade->matriz_intersecao = similaridade_multiplica_matrizes(similaridade->matriz_compras, similaridade->linha, similaridade->coluna, transposta, similaridade->linha);
 
     for (int i = 0; i < similaridade->coluna; i++) free(transposta[i]);
