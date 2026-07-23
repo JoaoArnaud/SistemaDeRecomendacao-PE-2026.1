@@ -3,9 +3,9 @@
 #include "../include/recomendacao.h"
 
 int *recomendacao_vizinhos(const Similaridade *similaridade, int indice_cliente, int *total_vizinhos) {
-    int *l = (int *) malloc(similaridade->n * sizeof(int));
+    int *l = (int *) malloc(similaridade->linha * sizeof(int));
     *total_vizinhos = 0;
-    for (int j = 0; j < similaridade->n; j++) {
+    for (int j = 0; j < similaridade->linha; j++) {
         if (j == indice_cliente) continue;
         if (similaridade->matriz_similaridade[indice_cliente][j] < 1.0) {
             l[*total_vizinhos] = j;

@@ -8,8 +8,8 @@ typedef int** Matriz;
 typedef double** MatrizDouble;
 
 typedef struct {
-    int n;
-    int m;
+    int linha;
+    int coluna;
     Matriz matriz_compras;
     Matriz matriz_intersecao;
     MatrizDouble matriz_similaridade;
