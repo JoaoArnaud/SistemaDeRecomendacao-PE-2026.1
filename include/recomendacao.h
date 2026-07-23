@@ -13,7 +13,7 @@ typedef struct {
 
 int *getListaVizinhos(const Similaridade *similaridade, int indice_cliente, int *total_vizinhos);
 vector<ItemRanking> recomendacao_calcula_ranking(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente);
-bool recomendacao_compara_ranking(const ItemRanking &a, const ItemRanking &b);
+bool comparaRanking(const ItemRanking &a, const ItemRanking &b);
 vector<ItemRanking> recomendacao_top_k(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k);
 
 #endif

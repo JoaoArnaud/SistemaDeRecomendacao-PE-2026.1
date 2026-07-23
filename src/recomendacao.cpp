@@ -39,14 +39,17 @@ vector<ItemRanking> recomendacao_calcula_ranking(const Similaridade *similaridad
     return r;
 }
 
-bool recomendacao_compara_ranking(const ItemRanking &a, const ItemRanking &b) {
-    if (a.ranqueamento != b.ranqueamento) return a.ranqueamento < b.ranqueamento;
+bool comparaRanking(const ItemRanking &a, const ItemRanking &b) {
+    if (a.ranqueamento != b.ranqueamento) {
+        return a.ranqueamento < b.ranqueamento;
+    }
+    
     return a.indice_produto < b.indice_produto;
 }
 
 vector<ItemRanking> recomendacao_top_k(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k) {
     vector<ItemRanking> r = recomendacao_calcula_ranking(similaridade, lista_compras, indice_cliente);
-    sort(r.begin(), r.end(), recomendacao_compara_ranking);
+    sort(r.begin(), r.end(), comparaRanking);
     if (k > (int) r.size()) k = r.size();
     return vector<ItemRanking>(r.begin(), r.begin() + k);
 }
