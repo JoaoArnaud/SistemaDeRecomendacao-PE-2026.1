@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
             const char *caminho = (total_csvs > 0) ? argv[i + 2] : "data/dados_venda_cluster_17.csv";
 
             ListaCompras lista_compras;
-            inicializa_lista_compras(&lista_compras);
+            inicializaListaCompras(&lista_compras);
             if (!carregarDados(&lista_compras, caminho)) continue;
 
             cout << caminho << endl;
@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
             cout << "numero de produtos registrados: " << lista_compras.nomes_produtos.size() << endl;
 
             for (int j = 0; j < 3 && j < (int)lista_compras.cod_clientes.size(); j++) {
-                lista_compras_imprime_compras(&lista_compras, lista_compras.cod_clientes[j]);
+                exibirCompras(&lista_compras, lista_compras.cod_clientes[j]);
             }
         }
     }
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
             const char *caminho = (total_csvs > 0) ? argv[i + 4] : "data/dados_venda_cluster_17.csv";
 
             ListaCompras lista_compras;
-            inicializa_lista_compras(&lista_compras);
+            inicializaListaCompras(&lista_compras);
             if (!carregarDados(&lista_compras, caminho)) continue;
 
             Similaridade sim;
@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
         const char *caminho = (!usa_defaults && argc > 6) ? argv[6] : "data/dados_venda_cluster_17.csv";
 
         ListaCompras lista_compras;
-        inicializa_lista_compras(&lista_compras);
+        inicializaListaCompras(&lista_compras);
         if (!carregarDados(&lista_compras, caminho)) return 1;
 
         Similaridade sim;
@@ -103,7 +103,7 @@ int main(int argc, char **argv) {
 
         cout << caminho << endl;
         for (int i = 0; i < 3; i++) {
-            int indice = lista_compras_indice_cliente(&lista_compras, codigos[i]);
+            int indice = getIndexCliente(&lista_compras, codigos[i]);
             cout << "recomendacoes para " << codigos[i] << " (indice interno " << indice << "):" << endl;
             vector<ItemRanking> topk = recomendacao_top_k(&sim, &lista_compras, indice, k);
             for (int j = 0; j < (int) topk.size(); j++) {

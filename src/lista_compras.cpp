@@ -2,7 +2,7 @@
 #include <iostream>
 #include "../include/lista_compras.h"
 
-void inicializa_lista_compras(ListaCompras *lista_compras) {
+void inicializaListaCompras(ListaCompras *lista_compras) {
     lista_compras->cod_clientes.clear(); // inicializa apagando todos os elementos do vetor
     lista_compras->mapa_clientes.clear();
     lista_compras->nomes_produtos.clear();
@@ -76,22 +76,22 @@ bool carregarDados(ListaCompras *lista_compras, const char *caminho_arquivo) {
 }
 
 // Retorna o índice do cliente no vetor mapa_clientes, ou -1 caso não exista
-int lista_compras_indice_cliente(const ListaCompras *lista_compras, const string &cod_cliente) {
+int getIndexCliente(const ListaCompras *lista_compras, const string &cod_cliente) {
     map<string, int>::const_iterator i = lista_compras->mapa_clientes.find(cod_cliente);
     if (i == lista_compras->mapa_clientes.end()) return -1;
     return i->second;
 }
 
 // Retorna o índice do produto no vetor mapa_produtos, ou -1 caso não exista
-int lista_compras_indice_produto(const ListaCompras *lista_compras, const string &cod_produto) {
+int getIndexProduto(const ListaCompras *lista_compras, const string &cod_produto) {
     map<string, int>::const_iterator i = lista_compras->mapa_produtos.find(cod_produto);
     if (i == lista_compras->mapa_produtos.end()) return -1;
     return i->second;
 }
 
 
-void lista_compras_imprime_compras(const ListaCompras *lista_compras, const string &cod_cliente) {
-    int indice = lista_compras_indice_cliente(lista_compras, cod_cliente);
+void exibirCompras(const ListaCompras *lista_compras, const string &cod_cliente) {
+    int indice = getIndexCliente(lista_compras, cod_cliente);
     if (indice == -1) return;
 
     cout << "compras de " << cod_cliente << ":" << endl;
