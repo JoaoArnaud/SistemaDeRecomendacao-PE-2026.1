@@ -3,16 +3,16 @@
 #include "../include/recomendacao.h"
 
 int *recomendacao_vizinhos(const Similaridade *similaridade, int indice_cliente, int *total_vizinhos) {
-    int *l = (int *) malloc(similaridade->linha * sizeof(int));
+    int *lista_vizinhos = (int *) malloc(similaridade->linha_matriz * sizeof(int));
     *total_vizinhos = 0;
-    for (int j = 0; j < similaridade->linha; j++) {
+    for (int j = 0; j < similaridade->linha_matriz; j++) {
         if (j == indice_cliente) continue;
         if (similaridade->matriz_similaridade[indice_cliente][j] < 1.0) {
-            l[*total_vizinhos] = j;
+            lista_vizinhos[*total_vizinhos] = j;
             (*total_vizinhos)++;
         }
     }
-    return l;
+    return lista_vizinhos;
 }
 
 vector<ItemRanking> recomendacao_calista_comprasula_ranking(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente) {
