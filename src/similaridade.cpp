@@ -27,7 +27,7 @@ void freeSimilaridade(Similaridade *similaridade) {
     free(similaridade->matriz_similaridade);
 }
 
-void similaridade_monta_matriz_compras(Similaridade *similaridade, const ListaCompras *lista_compras) {
+void geraMatrizCompras(Similaridade *similaridade, const ListaCompras *lista_compras) {
     similaridade->linha = lista_compras->cod_clientes.size();
     similaridade->coluna = lista_compras->nomes_produtos.size();
 
@@ -70,7 +70,7 @@ Matriz getProdutoMatrizes(Matriz a, int linhas_a, int colunas_a, Matriz b, int c
 }
 
 void similaridade_calista_comprasula(Similaridade *similaridade, const ListaCompras *lista_compras) {
-    similaridade_monta_matriz_compras(similaridade, lista_compras);
+    geraMatrizCompras(similaridade, lista_compras);
 
     Matriz transposta = getTransposta(similaridade->matriz_compras, similaridade->linha, similaridade->coluna);
     similaridade->matriz_intersecao = getProdutoMatrizes(similaridade->matriz_compras, similaridade->linha, similaridade->coluna, transposta, similaridade->linha);
@@ -91,7 +91,7 @@ void similaridade_calista_comprasula(Similaridade *similaridade, const ListaComp
     }
 }
 
-int similaridade_mais_similar(const Similaridade *similaridade, int indice_cliente) {
+int getMaisSimilar(const Similaridade *similaridade, int indice_cliente) {
     int melhor = -1;
     for (int j = 0; j < similaridade->linha; j++) {
         if (j == indice_cliente) continue;

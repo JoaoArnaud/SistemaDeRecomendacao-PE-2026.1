@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
                      << ", intersecao[" << a << "][" << b << "]=" << similaridade.matriz_intersecao[a][b]
                      << ", similaridade[" << a << "][" << b << "]=" << similaridade.matriz_similaridade[a][b]
                      << endl;
-                int mais_similar = similaridade_mais_similar(&similaridade, a);
+                int mais_similar = getMaisSimilar(&similaridade, a);
                 cout << "mais similar a " << a << ": " << mais_similar
                      << " (" << lista_compras.cod_clientes[mais_similar] << "), similaridade="
                      << similaridade.matriz_similaridade[a][mais_similar]

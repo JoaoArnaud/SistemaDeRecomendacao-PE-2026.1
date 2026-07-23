@@ -17,10 +17,10 @@ typedef struct {
 
 void inicializaSimilaridade(Similaridade *similaridade);
 void freeSimilaridade(Similaridade *similaridade);
-void similaridade_monta_matriz_compras(Similaridade *similaridade, const ListaCompras *lista_compras);
+void geraMatrizCompras(Similaridade *similaridade, const ListaCompras *lista_compras);
 Matriz getTransposta(Matriz a, int linhas, int colunas);
 Matriz getProdutoMatrizes(Matriz a, int linhas_a, int colunas_a, Matriz b, int colunas_b);
 void similaridade_calista_comprasula(Similaridade *similaridade, const ListaCompras *lista_compras);
-int similaridade_mais_similar(const Similaridade *similaridade, int indice_cliente);
+int getMaisSimilar(const Similaridade *similaridade, int indice_cliente);
 
 #endif
