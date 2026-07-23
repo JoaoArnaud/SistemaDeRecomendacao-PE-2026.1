@@ -22,8 +22,11 @@ bool carregarDados(ListaCompras *lista_compras, const char *caminho_arquivo) {
     char nome_produto[63];
     char cabecalho[128];
 
-    char *ignora_cabecalho = fgets(cabecalho, sizeof(cabecalho), arquivo); // le o cabeçalho
-    (void) ignora_cabecalho; // ignora o valor retornado
+    // faz uma "validação" do cabeçalho do arquivo, apenas para pular a primeira linha
+    if(fgets(cabecalho, sizeof(cabecalho), arquivo) == NULL) {
+        perror(caminho_arquivo);
+        return false;
+    }
 
     while (fscanf(arquivo, "%*[^,],%9[^,],%9[^,],%63[^\n]\n", 
         cod_cliente, 
@@ -47,17 +50,13 @@ bool carregarDados(ListaCompras *lista_compras, const char *caminho_arquivo) {
     // redimensiona o vetor de compras para ter uma posição para cada cliente
     lista_compras->compras.resize(lista_compras->cod_clientes.size());
 
-    fclose(arquivo);
-
     // reabre o arquivo para ler novamente e preencher as compras
-    arquivo = fopen(caminho_arquivo, "r");
-    if (arquivo == NULL) {
+    rewind(arquivo);
+
+    if(fgets(cabecalho, sizeof(cabecalho), arquivo) == NULL) {
         perror(caminho_arquivo);
         return false;
     }
-
-    ignora_cabecalho = fgets(cabecalho, sizeof(cabecalho), arquivo);
-    (void) ignora_cabecalho;
 
     while (fscanf(arquivo, "%*[^,],%9[^,],%9[^,],%63[^\n]\n", 
         cod_cliente, 
