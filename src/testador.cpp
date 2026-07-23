@@ -106,7 +106,7 @@ int main(int argc, char **argv) {
         for (int i = 0; i < 3; i++) {
             int indice = getIndexCliente(&lista_compras, codigos[i]);
             cout << "recomendacoes para " << codigos[i] << " (indice interno " << indice << "):" << endl;
-            ItemRanking *topk = recomendacao_top_k(&similaridade, &lista_compras, indice, k);
+            ItemRanking *topk = getTopKRecomendacoes(&similaridade, &lista_compras, indice, k);
             for (int j = 0; j < k; j++) {
                 cout << lista_compras.nomes_produtos[topk[j].indice_produto] << " (Rank=" << topk[j].ranqueamento << ")" << endl;
             }

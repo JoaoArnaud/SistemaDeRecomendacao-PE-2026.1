@@ -47,7 +47,7 @@ bool comparaRanking(const ItemRanking &a, const ItemRanking &b) {
     return a.indice_produto < b.indice_produto;
 }
 
-ItemRanking *recomendacao_top_k(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k) {
+ItemRanking *getTopKRecomendacoes(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k) {
     int m = lista_compras->nomes_produtos.size();
     ItemRanking *r = recomendacao_calcula_ranking(similaridade, lista_compras, indice_cliente);
     sort(r, r + m, comparaRanking);
