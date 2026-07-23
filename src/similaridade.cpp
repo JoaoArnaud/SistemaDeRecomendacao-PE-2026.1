@@ -56,7 +56,7 @@ Matriz getTransposta(Matriz a, int linhas, int colunas) {
     return transposta;
 }
 
-Matriz similaridade_multiplica_matrizes(Matriz a, int linhas_a, int colunas_a, Matriz b, int colunas_b) {
+Matriz getProdutoMatrizes(Matriz a, int linhas_a, int colunas_a, Matriz b, int colunas_b) {
     Matriz c = (Matriz) malloc(linhas_a * sizeof(int *));
     for (int i = 0; i < linhas_a; i++) {
         c[i] = (int *) calloc(colunas_b, sizeof(int));
@@ -73,7 +73,7 @@ void similaridade_calista_comprasula(Similaridade *similaridade, const ListaComp
     similaridade_monta_matriz_compras(similaridade, lista_compras);
 
     Matriz transposta = getTransposta(similaridade->matriz_compras, similaridade->linha, similaridade->coluna);
-    similaridade->matriz_intersecao = similaridade_multiplica_matrizes(similaridade->matriz_compras, similaridade->linha, similaridade->coluna, transposta, similaridade->linha);
+    similaridade->matriz_intersecao = getProdutoMatrizes(similaridade->matriz_compras, similaridade->linha, similaridade->coluna, transposta, similaridade->linha);
 
     for (int i = 0; i < similaridade->coluna; i++) free(transposta[i]);
     free(transposta);
