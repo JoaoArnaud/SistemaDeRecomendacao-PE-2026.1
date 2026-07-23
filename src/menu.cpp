@@ -42,17 +42,14 @@ void executarEntrega2(const char *caminhoArquivo) {
     inicializaListaCompras(&listaCompras);
 
     if (!carregarDados(&listaCompras, caminhoArquivo)) {
-        std::cerr << "Erro ao carregar o arquivo.\n";
+        std::cout << "Erro ao carregar o arquivo.\n";
         return;
     }
 
     int indiceCliente1;
     int indiceCliente2;
 
-    std::cout
-        << "\nExistem "
-        << listaCompras.cod_clientes.size()
-        << " clientes.\n";
+    std::cout << "\nExistem " << listaCompras.cod_clientes.size()<< " clientes.\n";
 
     std::cout << "Digite o índice do primeiro cliente: ";
     std::cin >> indiceCliente1;
@@ -82,7 +79,7 @@ void executarEntrega3(const char *caminhoArquivo) {
     inicializaListaCompras(&listaCompras);
 
     if (!carregarDados(&listaCompras, caminhoArquivo)) {
-        std::cerr << "Erro ao carregar o arquivo.\n";
+        std::cout << "Erro ao carregar o arquivo.\n";
         return;
     }
 
