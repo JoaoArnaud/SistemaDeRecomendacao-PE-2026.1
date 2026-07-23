@@ -3,6 +3,7 @@
 #include "../include/lista_compras.h"
 #include "../include/similaridade.h"
 #include "../include/recomendacao.h"
+using namespace std;
 
 int main(int argc, char **argv) {
     if (argc < 2) {

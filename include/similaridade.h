@@ -2,7 +2,6 @@
 #define SIMILARIDADE_H
 
 #include "../include/lista_compras.h"
-using namespace std;
 
 typedef int** Matriz;
 typedef double** MatrizDouble;

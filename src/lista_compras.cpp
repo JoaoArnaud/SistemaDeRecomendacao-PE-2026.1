@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "../include/lista_compras.h"
+using namespace std;
 
 void inicializaListaCompras(ListaCompras *lista_compras) {
     lista_compras->cod_clientes.clear(); // inicializa apagando todos os elementos do vetor

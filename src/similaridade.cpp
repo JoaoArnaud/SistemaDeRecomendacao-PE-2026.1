@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "../include/similaridade.h"
+using namespace std;
 
 void inicializaSimilaridade(Similaridade *similaridade) {
     similaridade->linha_matriz = 0;

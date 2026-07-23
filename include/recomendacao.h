@@ -3,7 +3,6 @@
 
 #include "../include/lista_compras.h"
 #include "../include/similaridade.h"
-using namespace std;
 
 typedef struct {
     int indice_produto;

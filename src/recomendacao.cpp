@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <stdlib.h>
 #include "../include/recomendacao.h"
+using namespace std;
 
 int *getListaVizinhos(const Similaridade *similaridade, int indice_cliente, int *total_vizinhos) {
     int *lista_vizinhos = (int *) malloc(similaridade->linha_matriz * sizeof(int));
