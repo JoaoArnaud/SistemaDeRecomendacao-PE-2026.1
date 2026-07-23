@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "../include/similaridade.h"
-using namespace std;
 
 void freeSimilaridade(Similaridade *similaridade) {
 
@@ -24,7 +23,7 @@ void geraMatrizCompras(Similaridade *similaridade, const ListaCompras *lista_com
     }
 
     for (int i = 0; i < similaridade->linha_matriz; i++) {
-        list<int>::const_iterator it;
+        std::list<int>::const_iterator it;
         for (it = lista_compras->compras[i].begin(); it != lista_compras->compras[i].end(); it++) {
             similaridade->matriz_compras[i][*it] = 1;
         }
@@ -32,7 +31,7 @@ void geraMatrizCompras(Similaridade *similaridade, const ListaCompras *lista_com
 }
 
 Matriz getTransposta(Matriz a, int linhas, int colunas) {
-    Matriz transposta = (Matriz) malloc(colunas * sizeof(int *));
+    Matriz transposta = (Matriz) malloc(colunas * sizeof(int *)); // todo: otimizar alocação da matriz transposta
     for (int j = 0; j < colunas; j++) {
         transposta[j] = (int *) calloc(linhas, sizeof(int));
     }

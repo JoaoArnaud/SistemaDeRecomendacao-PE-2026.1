@@ -54,22 +54,24 @@ void executarEntrega2(const char *caminhoArquivo) {
     std::cout << "Digite o índice do primeiro cliente: ";
     std::cin >> indiceCliente1;
 
-    std::cout << "Digite o índice do segundo cliente: ";
-    std::cin >> indiceCliente2;
-
     Similaridade similaridade;
     calculaMatrizSimilaridade(&similaridade, &listaCompras);
 
     std::cout << "\nCliente " << indiceCliente1 << " (" << listaCompras.cod_clientes[indiceCliente1] << "):\n";
     std::cout << "Quantidade de produtos: " << similaridade.matriz_intersecao[indiceCliente1][indiceCliente1] << '\n';
-    std::cout << "Interseção com o cliente " << indiceCliente2 << ": " << similaridade.matriz_intersecao[indiceCliente1][indiceCliente2] << '\n';
 
-    std::cout << "Similaridade: " << similaridade.matriz_similaridade[indiceCliente1][indiceCliente2] << '\n';
+    int indiceMaisSimilar1 = getMaisSimilar(&similaridade, indiceCliente1);
 
-    int indiceMaisSimilar = getMaisSimilar(&similaridade, indiceCliente1);
+    std::cout << "Cliente mais similar: " << indiceMaisSimilar1 << " (" << listaCompras.cod_clientes[indiceMaisSimilar1] << ")\n";
+    std::cout << "Valor da similaridade: " << similaridade.matriz_similaridade[indiceCliente1][indiceMaisSimilar1]<< '\n';
 
-    std::cout << "Cliente mais similar: " << indiceMaisSimilar << " (" << listaCompras.cod_clientes[indiceMaisSimilar] << ")\n";
-    std::cout << "Valor da similaridade: " << similaridade.matriz_similaridade[indiceCliente1][indiceMaisSimilar]<< '\n';
+    std::cout << "\nDigite o índice do segundo cliente: ";
+    std::cin >> indiceCliente2;
+
+    int indiceMaisSimilar2 = getMaisSimilar(&similaridade, indiceCliente2);
+
+    std::cout << "Cliente mais similar: " << indiceMaisSimilar2 << " (" << listaCompras.cod_clientes[indiceMaisSimilar2] << ")\n";
+    std::cout << "Valor da similaridade: " << similaridade.matriz_similaridade[indiceCliente2][indiceMaisSimilar2]<< '\n';
 
     freeSimilaridade(&similaridade);
 }
