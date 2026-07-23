@@ -1,118 +1,44 @@
 #include <iostream>
-#include <stdlib.h>
-#include "../include/lista_compras.h"
-#include "../include/similaridade.h"
-#include "../include/recomendacao.h"
-using namespace std;
 
-int main(int argc, char **argv) {
-    if (argc < 2) {
-        cout << "uso: " << argv[0] << " entrega1 CSV/CSV'S" << endl << "     OU" << endl;
-        cout << "     " << argv[0] << " entrega2 id_cliente1 id_cliente2 CSV/CSV'S" << endl << "     OU" << endl;
-        cout << "     " << argv[0] << " entrega3 cod_cliente1 cod_cliente2 cod_cliente3 k(recomendacoes) CSV/CSV'S" << endl;
-        cout << "entregas disponiveis: entrega1, entrega2, entrega3" << endl;
-        cout << "para cada entrega, existem valores default para os parametros caso nao sejam passados" << endl;
-        return 1;
-    }
+#include "../include/menu.h"
 
-    string entrega = argv[1];
+int main() {
+    const char *caminhoArquivo = "data/dados_venda_cluster_17.csv";
+    int opcao;
+    
+    do {
+        std::cout << "\n========== MENU ==========\n";
+        std::cout << "1 - Executar entrega 1\n";
+        std::cout << "2 - Executar entrega 2\n";
+        std::cout << "3 - Executar entrega 3\n";
+        std::cout << "0 - Sair\n";
+        std::cout << "==========================\n";
+        std::cout << "Escolha uma opção: ";
 
-    if (entrega != "entrega1" && entrega != "entrega2" && entrega != "entrega3") {
-        cout << "entrega desconhecida: " << entrega << endl;
-        cout << "entregas disponiveis: entrega1, entrega2, entrega3" << endl;
-        return 1;
-    }
+        std::cin >> opcao;
 
-    if (entrega == "entrega1") {
-        int quantidade_arquivos = argc - 2;
-        for (int i = 0; i < (quantidade_arquivos > 0 ? quantidade_arquivos : 1); i++) {
-            const char *caminho_arquivo = (quantidade_arquivos > 0) ? argv[i + 2] : "data/dados_venda_cluster_17.csv";
+        switch (opcao) {
+            case 1:
+                executarEntrega1(caminhoArquivo);
+                break;
 
-            ListaCompras lista_compras;
-            inicializaListaCompras(&lista_compras);
-            if (!carregarDados(&lista_compras, caminho_arquivo)) continue;
+            case 2:
+                executarEntrega2(caminhoArquivo);
+                break;
 
-            cout << caminho_arquivo << endl;
-            cout << "numero de clientes registrados: " << lista_compras.cod_clientes.size() << endl;
-            cout << "numero de produtos registrados: " << lista_compras.nomes_produtos.size() << endl;
+            case 3:
+                executarEntrega3(caminhoArquivo);
+                break;
 
-            for (int j = 0; j < 3 && j < (int)lista_compras.cod_clientes.size(); j++) {
-                exibirCompras(&lista_compras, lista_compras.cod_clientes[j]);
-            }
+            case 0:
+                std::cout << "Programa encerrado.\n";
+                break;
+
+            default:
+                std::cout << "Opção inválida. Tente novamente.\n";
         }
-    }
 
-    if (entrega == "entrega2") {
-        int indice1 = (argc > 2) ? atoi(argv[2]) : 0;
-        int indice2 = (argc > 3) ? atoi(argv[3]) : 1;
-        int quantidade_arquivos = argc - 4;
-        for (int i = 0; i < (quantidade_arquivos > 0 ? quantidade_arquivos : 1); i++) {
-            const char *caminho_arquivo = (quantidade_arquivos > 0) ? argv[i + 4] : "data/dados_venda_cluster_17.csv";
-
-            ListaCompras lista_compras;
-            inicializaListaCompras(&lista_compras);
-            if (!carregarDados(&lista_compras, caminho_arquivo)) continue;
-
-            Similaridade similaridade;
-            calculaMatrizSimilaridade(&similaridade, &lista_compras);
-
-            cout << caminho_arquivo << endl;
-            for (int par = 0; par < 2; par++) {
-                int a = (par == 0) ? indice1 : indice2;
-                int b = (par == 0) ? indice2 : indice1;
-                cout << "cliente " << a << " (" << lista_compras.cod_clientes[a] << "): "
-                     << "produtos=" << similaridade.matriz_intersecao[a][a]
-                     << ", intersecao[" << a << "][" << b << "]=" << similaridade.matriz_intersecao[a][b]
-                     << ", similaridade[" << a << "][" << b << "]=" << similaridade.matriz_similaridade[a][b]
-                     << endl;
-                int mais_similar = getMaisSimilar(&similaridade, a);
-                cout << "mais similar a " << a << ": " << mais_similar
-                     << " (" << lista_compras.cod_clientes[mais_similar] << "), similaridade="
-                     << similaridade.matriz_similaridade[a][mais_similar]
-                     << " I[" << a << "][" << mais_similar << "]=" << similaridade.matriz_intersecao[a][mais_similar] 
-                     << " P[" << a << "][" << a << "]=" << similaridade.matriz_intersecao[a][a] 
-                     << endl;
-            }
-            freeSimilaridade(&similaridade);
-        }
-    }
-
-    if (entrega == "entrega3") {
-        bool usa_defaults = (argc < 5);
-        const char *caminho_arquivo = (!usa_defaults && argc > 6) ? argv[6] : "data/dados_venda_cluster_17.csv";
-
-        ListaCompras lista_compras;
-        inicializaListaCompras(&lista_compras);
-        if (!carregarDados(&lista_compras, caminho_arquivo)) return 1;
-
-        Similaridade similaridade;
-        calculaMatrizSimilaridade(&similaridade, &lista_compras);
-
-        string codigos[3];
-        if (usa_defaults) {
-            codigos[0] = lista_compras.cod_clientes[0];
-            codigos[1] = lista_compras.cod_clientes[1];
-            codigos[2] = lista_compras.cod_clientes[2];
-        } else {
-            codigos[0] = argv[2];
-            codigos[1] = argv[3];
-            codigos[2] = argv[4];
-        }
-        int k = (!usa_defaults && argc > 5) ? atoi(argv[5]) : 3;
-        if (k > (int) lista_compras.nomes_produtos.size()) k = (int) lista_compras.nomes_produtos.size();
-
-        cout << caminho_arquivo << endl;
-        for (int i = 0; i < 3; i++) {
-            int indice = getIndexCliente(&lista_compras, codigos[i]);
-            cout << "recomendacoes para " << codigos[i] << " (indice interno " << indice << "):" << endl;
-            ItemRanking *topk = getTopKRecomendacoes(&similaridade, &lista_compras, indice, k);
-            for (int j = 0; j < k; j++) {
-                cout << lista_compras.nomes_produtos[topk[j].indice_produto] << " (Rank=" << topk[j].ranqueamento << ")" << endl;
-            }
-            free(topk);
-        }
-        freeSimilaridade(&similaridade);
-    }
+    } while (opcao != 0);
 
     return 0;
 }
