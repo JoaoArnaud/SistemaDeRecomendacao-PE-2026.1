@@ -2,15 +2,15 @@
 #include <iostream>
 #include "../include/lista_compras.h"
 
-void inicializa_lista_compras(ListaCompras *lc) {
-    lc->cod_clientes.clear(); // inicializa apagando todos os elementos do vetor
-    lc->mapa_clientes.clear();
-    lc->nomes_produtos.clear();
-    lc->mapa_produtos.clear();
-    lc->compras.clear();
+void inicializa_lista_compras(ListaCompras *lista_compras) {
+    lista_compras->cod_clientes.clear(); // inicializa apagando todos os elementos do vetor
+    lista_compras->mapa_clientes.clear();
+    lista_compras->nomes_produtos.clear();
+    lista_compras->mapa_produtos.clear();
+    lista_compras->compras.clear();
 }
 
-bool carregarDados(ListaCompras *lc, const char *caminho_arquivo) {
+bool carregarDados(ListaCompras *lista_compras, const char *caminho_arquivo) {
     FILE *arquivo = fopen(caminho_arquivo, "r");
     if (arquivo == NULL) {
         perror(caminho_arquivo);
@@ -32,20 +32,20 @@ bool carregarDados(ListaCompras *lc, const char *caminho_arquivo) {
         {
 
         // adiciona cliente e produto no mapa (cliente -> índice, produto -> índice) caso ainda não existam
-        if (lc->mapa_clientes.find(cod_cliente) == lc->mapa_clientes.end()) {
-            int indice = lc->cod_clientes.size();
-            lc->cod_clientes.push_back(cod_cliente);
-            lc->mapa_clientes[cod_cliente] = indice;
+        if (lista_compras->mapa_clientes.find(cod_cliente) == lista_compras->mapa_clientes.end()) {
+            int indice = lista_compras->cod_clientes.size();
+            lista_compras->cod_clientes.push_back(cod_cliente);
+            lista_compras->mapa_clientes[cod_cliente] = indice;
         }
-        if (lc->mapa_produtos.find(cod_produto) == lc->mapa_produtos.end()) {
-            int indice = lc->nomes_produtos.size();
-            lc->nomes_produtos.push_back(nome_produto);
-            lc->mapa_produtos[cod_produto] = indice;
+        if (lista_compras->mapa_produtos.find(cod_produto) == lista_compras->mapa_produtos.end()) {
+            int indice = lista_compras->nomes_produtos.size();
+            lista_compras->nomes_produtos.push_back(nome_produto);
+            lista_compras->mapa_produtos[cod_produto] = indice;
         }
     }
 
     // redimensiona o vetor de compras para ter uma posição para cada cliente
-    lc->compras.resize(lc->cod_clientes.size());
+    lista_compras->compras.resize(lista_compras->cod_clientes.size());
 
     fclose(arquivo);
 
@@ -65,9 +65,9 @@ bool carregarDados(ListaCompras *lc, const char *caminho_arquivo) {
         nome_produto) == 3) 
         {
 
-        int indice_cliente = lc->mapa_clientes[cod_cliente];
-        int indice_produto = lc->mapa_produtos[cod_produto];
-        lc->compras[indice_cliente].push_back(indice_produto);
+        int indice_cliente = lista_compras->mapa_clientes[cod_cliente];
+        int indice_produto = lista_compras->mapa_produtos[cod_produto];
+        lista_compras->compras[indice_cliente].push_back(indice_produto);
     }
 
     fclose(arquivo);
@@ -76,27 +76,27 @@ bool carregarDados(ListaCompras *lc, const char *caminho_arquivo) {
 }
 
 // Retorna o índice do cliente no vetor mapa_clientes, ou -1 caso não exista
-int lista_compras_indice_cliente(const ListaCompras *lc, const string &cod_cliente) {
-    map<string, int>::const_iterator i = lc->mapa_clientes.find(cod_cliente);
-    if (i == lc->mapa_clientes.end()) return -1;
+int lista_compras_indice_cliente(const ListaCompras *lista_compras, const string &cod_cliente) {
+    map<string, int>::const_iterator i = lista_compras->mapa_clientes.find(cod_cliente);
+    if (i == lista_compras->mapa_clientes.end()) return -1;
     return i->second;
 }
 
 // Retorna o índice do produto no vetor mapa_produtos, ou -1 caso não exista
-int lista_compras_indice_produto(const ListaCompras *lc, const string &cod_produto) {
-    map<string, int>::const_iterator i = lc->mapa_produtos.find(cod_produto);
-    if (i == lc->mapa_produtos.end()) return -1;
+int lista_compras_indice_produto(const ListaCompras *lista_compras, const string &cod_produto) {
+    map<string, int>::const_iterator i = lista_compras->mapa_produtos.find(cod_produto);
+    if (i == lista_compras->mapa_produtos.end()) return -1;
     return i->second;
 }
 
 
-void lista_compras_imprime_compras(const ListaCompras *lc, const string &cod_cliente) {
-    int indice = lista_compras_indice_cliente(lc, cod_cliente);
+void lista_compras_imprime_compras(const ListaCompras *lista_compras, const string &cod_cliente) {
+    int indice = lista_compras_indice_cliente(lista_compras, cod_cliente);
     if (indice == -1) return;
 
     cout << "compras de " << cod_cliente << ":" << endl;
     list<int>::const_iterator it;
-    for (it = lc->compras[indice].begin(); it != lc->compras[indice].end(); it++) {
-        cout << lc->nomes_produtos[*it] << endl;
+    for (it = lista_compras->compras[indice].begin(); it != lista_compras->compras[indice].end(); it++) {
+        cout << lista_compras->nomes_produtos[*it] << endl;
     }
 }

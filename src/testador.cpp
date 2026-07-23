@@ -27,16 +27,16 @@ int main(int argc, char **argv) {
         for (int i = 0; i < (total_csvs > 0 ? total_csvs : 1); i++) {
             const char *caminho = (total_csvs > 0) ? argv[i + 2] : "data/dados_venda_cluster_17.csv";
 
-            ListaCompras lc;
-            inicializa_lista_compras(&lc);
-            if (!carregarDados(&lc, caminho)) continue;
+            ListaCompras lista_compras;
+            inicializa_lista_compras(&lista_compras);
+            if (!carregarDados(&lista_compras, caminho)) continue;
 
             cout << caminho << endl;
-            cout << "numero de clientes registrados: " << lc.cod_clientes.size() << endl;
-            cout << "numero de produtos registrados: " << lc.nomes_produtos.size() << endl;
+            cout << "numero de clientes registrados: " << lista_compras.cod_clientes.size() << endl;
+            cout << "numero de produtos registrados: " << lista_compras.nomes_produtos.size() << endl;
 
-            for (int j = 0; j < 3 && j < (int)lc.cod_clientes.size(); j++) {
-                lista_compras_imprime_compras(&lc, lc.cod_clientes[j]);
+            for (int j = 0; j < 3 && j < (int)lista_compras.cod_clientes.size(); j++) {
+                lista_compras_imprime_compras(&lista_compras, lista_compras.cod_clientes[j]);
             }
         }
     }
@@ -48,26 +48,26 @@ int main(int argc, char **argv) {
         for (int i = 0; i < (total_csvs > 0 ? total_csvs : 1); i++) {
             const char *caminho = (total_csvs > 0) ? argv[i + 4] : "data/dados_venda_cluster_17.csv";
 
-            ListaCompras lc;
-            inicializa_lista_compras(&lc);
-            if (!carregarDados(&lc, caminho)) continue;
+            ListaCompras lista_compras;
+            inicializa_lista_compras(&lista_compras);
+            if (!carregarDados(&lista_compras, caminho)) continue;
 
             Similaridade sim;
             inicializa_similaridade(&sim);
-            similaridade_calcula(&sim, &lc);
+            similaridade_calista_comprasula(&sim, &lista_compras);
 
             cout << caminho << endl;
             for (int par = 0; par < 2; par++) {
                 int a = (par == 0) ? indice1 : indice2;
                 int b = (par == 0) ? indice2 : indice1;
-                cout << "cliente " << a << " (" << lc.cod_clientes[a] << "): "
+                cout << "cliente " << a << " (" << lista_compras.cod_clientes[a] << "): "
                      << "produtos=" << sim.matriz_intersecao[a][a]
                      << ", intersecao[" << a << "][" << b << "]=" << sim.matriz_intersecao[a][b]
                      << ", similaridade[" << a << "][" << b << "]=" << sim.matriz_similaridade[a][b]
                      << endl;
                 int mais_similar = similaridade_mais_similar(&sim, a);
                 cout << "mais similar a " << a << ": " << mais_similar
-                     << " (" << lc.cod_clientes[mais_similar] << "), similaridade="
+                     << " (" << lista_compras.cod_clientes[mais_similar] << "), similaridade="
                      << sim.matriz_similaridade[a][mais_similar]
                      << " I[" << a << "][" << mais_similar << "]=" << sim.matriz_intersecao[a][mais_similar] 
                      << " P[" << a << "][" << a << "]=" << sim.matriz_intersecao[a][a] 
@@ -81,19 +81,19 @@ int main(int argc, char **argv) {
         bool usa_defaults = (argc < 5);
         const char *caminho = (!usa_defaults && argc > 6) ? argv[6] : "data/dados_venda_cluster_17.csv";
 
-        ListaCompras lc;
-        inicializa_lista_compras(&lc);
-        if (!carregarDados(&lc, caminho)) return 1;
+        ListaCompras lista_compras;
+        inicializa_lista_compras(&lista_compras);
+        if (!carregarDados(&lista_compras, caminho)) return 1;
 
         Similaridade sim;
         inicializa_similaridade(&sim);
-        similaridade_calcula(&sim, &lc);
+        similaridade_calista_comprasula(&sim, &lista_compras);
 
         string codigos[3];
         if (usa_defaults) {
-            codigos[0] = lc.cod_clientes[0];
-            codigos[1] = lc.cod_clientes[1];
-            codigos[2] = lc.cod_clientes[2];
+            codigos[0] = lista_compras.cod_clientes[0];
+            codigos[1] = lista_compras.cod_clientes[1];
+            codigos[2] = lista_compras.cod_clientes[2];
         } else {
             codigos[0] = argv[2];
             codigos[1] = argv[3];
@@ -103,11 +103,11 @@ int main(int argc, char **argv) {
 
         cout << caminho << endl;
         for (int i = 0; i < 3; i++) {
-            int indice = lista_compras_indice_cliente(&lc, codigos[i]);
+            int indice = lista_compras_indice_cliente(&lista_compras, codigos[i]);
             cout << "recomendacoes para " << codigos[i] << " (indice interno " << indice << "):" << endl;
-            vector<ItemRanking> topk = recomendacao_top_k(&sim, &lc, indice, k);
+            vector<ItemRanking> topk = recomendacao_top_k(&sim, &lista_compras, indice, k);
             for (int j = 0; j < (int) topk.size(); j++) {
-                cout << lc.nomes_produtos[topk[j].indice_produto] << " (Rank=" << topk[j].ranqueamento << ")" << endl;
+                cout << lista_compras.nomes_produtos[topk[j].indice_produto] << " (Rank=" << topk[j].ranqueamento << ")" << endl;
             }
         }
         similaridade_libera(&sim);

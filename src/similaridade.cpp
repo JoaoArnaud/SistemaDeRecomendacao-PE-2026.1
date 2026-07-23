@@ -20,9 +20,9 @@ void similaridade_libera(Similaridade *sim) {
     free(sim->matriz_similaridade);
 }
 
-void similaridade_monta_matriz_compras(Similaridade *sim, const ListaCompras *lc) {
-    sim->n = lc->cod_clientes.size();
-    sim->m = lc->nomes_produtos.size();
+void similaridade_monta_matriz_compras(Similaridade *sim, const ListaCompras *lista_compras) {
+    sim->n = lista_compras->cod_clientes.size();
+    sim->m = lista_compras->nomes_produtos.size();
 
     sim->matriz_compras = (Matriz) malloc(sim->n * sizeof(int *));
     for (int i = 0; i < sim->n; i++) {
@@ -31,7 +31,7 @@ void similaridade_monta_matriz_compras(Similaridade *sim, const ListaCompras *lc
 
     for (int i = 0; i < sim->n; i++) {
         list<int>::const_iterator it;
-        for (it = lc->compras[i].begin(); it != lc->compras[i].end(); it++) {
+        for (it = lista_compras->compras[i].begin(); it != lista_compras->compras[i].end(); it++) {
             sim->matriz_compras[i][*it] = 1;
         }
     }
@@ -62,8 +62,8 @@ Matriz similaridade_multiplica_matrizes(Matriz a, int linhas_a, int colunas_a, M
     return c;
 }
 
-void similaridade_calcula(Similaridade *sim, const ListaCompras *lc) {
-    similaridade_monta_matriz_compras(sim, lc);
+void similaridade_calista_comprasula(Similaridade *sim, const ListaCompras *lista_compras) {
+    similaridade_monta_matriz_compras(sim, lista_compras);
 
     Matriz transposta = similaridade_transposta(sim->matriz_compras, sim->n, sim->m);
     sim->matriz_intersecao = similaridade_multiplica_matrizes(sim->matriz_compras, sim->n, sim->m, transposta, sim->n);

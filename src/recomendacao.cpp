@@ -15,8 +15,8 @@ int *recomendacao_vizinhos(const Similaridade *sim, int indice_cliente, int *tot
     return l;
 }
 
-vector<ItemRanking> recomendacao_calcula_ranking(const Similaridade *sim, const ListaCompras *lc, int indice_cliente) {
-    int m = lc->nomes_produtos.size();
+vector<ItemRanking> recomendacao_calista_comprasula_ranking(const Similaridade *sim, const ListaCompras *lista_compras, int indice_cliente) {
+    int m = lista_compras->nomes_produtos.size();
     vector<ItemRanking> r(m);
     for (int p = 0; p < m; p++) {
         r[p].indice_produto = p;
@@ -44,8 +44,8 @@ bool recomendacao_compara_ranking(const ItemRanking &a, const ItemRanking &b) {
     return a.indice_produto < b.indice_produto;
 }
 
-vector<ItemRanking> recomendacao_top_k(const Similaridade *sim, const ListaCompras *lc, int indice_cliente, int k) {
-    vector<ItemRanking> r = recomendacao_calcula_ranking(sim, lc, indice_cliente);
+vector<ItemRanking> recomendacao_top_k(const Similaridade *sim, const ListaCompras *lista_compras, int indice_cliente, int k) {
+    vector<ItemRanking> r = recomendacao_calista_comprasula_ranking(sim, lista_compras, indice_cliente);
     sort(r.begin(), r.end(), recomendacao_compara_ranking);
     if (k > (int) r.size()) k = r.size();
     return vector<ItemRanking>(r.begin(), r.begin() + k);
