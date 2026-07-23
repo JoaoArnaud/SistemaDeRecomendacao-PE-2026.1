@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
 
             ListaCompras lc;
             inicializa_lista_compras(&lc);
-            if (!lista_compras_carrega(&lc, caminho)) continue;
+            if (!carregarDados(&lc, caminho)) continue;
 
             cout << caminho << endl;
             cout << "numero de clientes registrados: " << lc.cod_clientes.size() << endl;
@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 
             ListaCompras lc;
             inicializa_lista_compras(&lc);
-            if (!lista_compras_carrega(&lc, caminho)) continue;
+            if (!carregarDados(&lc, caminho)) continue;
 
             Similaridade sim;
             inicializa_similaridade(&sim);
@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
 
         ListaCompras lc;
         inicializa_lista_compras(&lc);
-        if (!lista_compras_carrega(&lc, caminho)) return 1;
+        if (!carregarDados(&lc, caminho)) return 1;
 
         Similaridade sim;
         inicializa_similaridade(&sim);
