@@ -11,19 +11,13 @@ void inicializaSimilaridade(Similaridade *similaridade) {
 
 void freeSimilaridade(Similaridade *similaridade) {
 
-    for (int i = 0; i < similaridade->linha; i++) {
-        free(similaridade->matriz_compras[i]);
-    }
+    for (int i = 0; i < similaridade->linha; i++) free(similaridade->matriz_compras[i]);
     free(similaridade->matriz_compras);
 
-    for (int i = 0; i < similaridade->linha; i++) {
-        free(similaridade->matriz_intersecao[i]);
-    }
+    for (int i = 0; i < similaridade->linha; i++) free(similaridade->matriz_intersecao[i]);
     free(similaridade->matriz_intersecao);
 
-    for (int i = 0; i < similaridade->linha; i++) {
-        free(similaridade->matriz_similaridade[i]);
-    }
+    for (int i = 0; i < similaridade->linha; i++) free(similaridade->matriz_similaridade[i]);
     free(similaridade->matriz_similaridade);
 }
 
