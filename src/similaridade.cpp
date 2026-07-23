@@ -63,7 +63,7 @@ Matriz getProdutoMatrizes(Matriz a, int linhas_a, int colunas_a, Matriz b, int c
     return c;
 }
 
-void similaridade_calista_comprasula(Similaridade *similaridade, const ListaCompras *lista_compras) {
+void calculaMatrizSimilaridade(Similaridade *similaridade, const ListaCompras *lista_compras) {
     geraMatrizCompras(similaridade, lista_compras);
 
     Matriz transposta = getTransposta(similaridade->matriz_compras, similaridade->linha_matriz, similaridade->coluna_matriz);

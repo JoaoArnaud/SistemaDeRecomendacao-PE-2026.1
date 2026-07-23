@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
 
             Similaridade similaridade;
             inicializaSimilaridade(&similaridade);
-            similaridade_calista_comprasula(&similaridade, &lista_compras);
+            calculaMatrizSimilaridade(&similaridade, &lista_compras);
 
             cout << caminho << endl;
             for (int par = 0; par < 2; par++) {
@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
 
         Similaridade similaridade;
         inicializaSimilaridade(&similaridade);
-        similaridade_calista_comprasula(&similaridade, &lista_compras);
+        calculaMatrizSimilaridade(&similaridade, &lista_compras);
 
         string codigos[3];
         if (usa_defaults) {
