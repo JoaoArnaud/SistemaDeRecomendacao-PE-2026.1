@@ -7,14 +7,13 @@ typedef int** Matriz;
 typedef double** MatrizDouble;
 
 typedef struct {
-    int linha_matriz;
-    int coluna_matriz;
-    Matriz matriz_compras;
-    Matriz matriz_intersecao;
-    MatrizDouble matriz_similaridade;
+    int linha_matriz = 0;
+    int coluna_matriz = 0;
+    Matriz matriz_compras = nullptr;
+    Matriz matriz_intersecao = nullptr;
+    MatrizDouble matriz_similaridade = nullptr;
 } Similaridade;
 
-void inicializaSimilaridade(Similaridade *similaridade);
 void freeSimilaridade(Similaridade *similaridade);
 void geraMatrizCompras(Similaridade *similaridade, const ListaCompras *lista_compras);
 Matriz getTransposta(Matriz a, int linhas, int colunas);

@@ -54,7 +54,6 @@ int main(int argc, char **argv) {
             if (!carregarDados(&lista_compras, caminho_arquivo)) continue;
 
             Similaridade similaridade;
-            inicializaSimilaridade(&similaridade);
             calculaMatrizSimilaridade(&similaridade, &lista_compras);
 
             cout << caminho_arquivo << endl;
@@ -87,7 +86,6 @@ int main(int argc, char **argv) {
         if (!carregarDados(&lista_compras, caminho_arquivo)) return 1;
 
         Similaridade similaridade;
-        inicializaSimilaridade(&similaridade);
         calculaMatrizSimilaridade(&similaridade, &lista_compras);
 
         string codigos[3];

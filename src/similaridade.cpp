@@ -2,14 +2,6 @@
 #include "../include/similaridade.h"
 using namespace std;
 
-void inicializaSimilaridade(Similaridade *similaridade) {
-    similaridade->linha_matriz = 0;
-    similaridade->coluna_matriz = 0;
-    similaridade->matriz_compras = NULL;
-    similaridade->matriz_intersecao = NULL;
-    similaridade->matriz_similaridade = NULL;
-}
-
 void freeSimilaridade(Similaridade *similaridade) {
 
     for (int i = 0; i < similaridade->linha_matriz; i++) free(similaridade->matriz_compras[i]);
