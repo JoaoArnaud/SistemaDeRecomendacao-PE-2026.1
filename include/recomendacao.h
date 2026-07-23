@@ -1,7 +1,6 @@
 #ifndef RECOMENDACAO_H
 #define RECOMENDACAO_H
 
-#include <vector>
 #include "../include/lista_compras.h"
 #include "../include/similaridade.h"
 using namespace std;
@@ -12,8 +11,8 @@ typedef struct {
 } ItemRanking;
 
 int *getListaVizinhos(const Similaridade *similaridade, int indice_cliente, int *total_vizinhos);
-vector<ItemRanking> recomendacao_calcula_ranking(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente);
+ItemRanking *recomendacao_calcula_ranking(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente);
 bool comparaRanking(const ItemRanking &a, const ItemRanking &b);
-vector<ItemRanking> recomendacao_top_k(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k);
+ItemRanking *recomendacao_top_k(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k);
 
 #endif

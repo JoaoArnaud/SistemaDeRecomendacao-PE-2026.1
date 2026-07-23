@@ -15,9 +15,9 @@ int *getListaVizinhos(const Similaridade *similaridade, int indice_cliente, int 
     return lista_vizinhos;
 }
 
-vector<ItemRanking> recomendacao_calcula_ranking(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente) {
+ItemRanking *recomendacao_calcula_ranking(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente) {
     int m = lista_compras->nomes_produtos.size();
-    vector<ItemRanking> r(m);
+    ItemRanking *r = (ItemRanking *) malloc(m * sizeof(ItemRanking));
     for (int p = 0; p < m; p++) {
         r[p].indice_produto = p;
         r[p].ranqueamento = 1.0;
@@ -47,9 +47,14 @@ bool comparaRanking(const ItemRanking &a, const ItemRanking &b) {
     return a.indice_produto < b.indice_produto;
 }
 
-vector<ItemRanking> recomendacao_top_k(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k) {
-    vector<ItemRanking> r = recomendacao_calcula_ranking(similaridade, lista_compras, indice_cliente);
-    sort(r.begin(), r.end(), comparaRanking);
-    if (k > (int) r.size()) k = r.size();
-    return vector<ItemRanking>(r.begin(), r.begin() + k);
+ItemRanking *recomendacao_top_k(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k) {
+    int m = lista_compras->nomes_produtos.size();
+    ItemRanking *r = recomendacao_calcula_ranking(similaridade, lista_compras, indice_cliente);
+    sort(r, r + m, comparaRanking);
+
+    if (k > m) k = m;
+    ItemRanking *topk = (ItemRanking *) malloc(k * sizeof(ItemRanking));
+    for (int j = 0; j < k; j++) topk[j] = r[j];
+    free(r);
+    return topk;
 }

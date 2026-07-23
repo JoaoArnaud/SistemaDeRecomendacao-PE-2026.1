@@ -100,15 +100,17 @@ int main(int argc, char **argv) {
             codigos[2] = argv[4];
         }
         int k = (!usa_defaults && argc > 5) ? atoi(argv[5]) : 3;
+        if (k > (int) lista_compras.nomes_produtos.size()) k = (int) lista_compras.nomes_produtos.size();
 
         cout << caminho << endl;
         for (int i = 0; i < 3; i++) {
             int indice = getIndexCliente(&lista_compras, codigos[i]);
             cout << "recomendacoes para " << codigos[i] << " (indice interno " << indice << "):" << endl;
-            vector<ItemRanking> topk = recomendacao_top_k(&similaridade, &lista_compras, indice, k);
-            for (int j = 0; j < (int) topk.size(); j++) {
+            ItemRanking *topk = recomendacao_top_k(&similaridade, &lista_compras, indice, k);
+            for (int j = 0; j < k; j++) {
                 cout << lista_compras.nomes_produtos[topk[j].indice_produto] << " (Rank=" << topk[j].ranqueamento << ")" << endl;
             }
+            free(topk);
         }
         freeSimilaridade(&similaridade);
     }
