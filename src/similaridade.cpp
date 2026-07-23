@@ -1,38 +1,38 @@
 #include <stdlib.h>
 #include "../include/similaridade.h"
 
-void inicializa_similaridade(Similaridade *sim) {
-    sim->n = 0;
-    sim->m = 0;
-    sim->matriz_compras = NULL;
-    sim->matriz_intersecao = NULL;
-    sim->matriz_similaridade = NULL;
+void inicializaSimilaridade(Similaridade *similaridade) {
+    similaridade->n = 0;
+    similaridade->m = 0;
+    similaridade->matriz_compras = NULL;
+    similaridade->matriz_intersecao = NULL;
+    similaridade->matriz_similaridade = NULL;
 }
 
-void similaridade_libera(Similaridade *sim) {
-    for (int i = 0; i < sim->n; i++) free(sim->matriz_compras[i]);
-    free(sim->matriz_compras);
+void freeSimilaridade(Similaridade *similaridade) {
+    for (int i = 0; i < similaridade->n; i++) free(similaridade->matriz_compras[i]);
+    free(similaridade->matriz_compras);
 
-    for (int i = 0; i < sim->n; i++) free(sim->matriz_intersecao[i]);
-    free(sim->matriz_intersecao);
+    for (int i = 0; i < similaridade->n; i++) free(similaridade->matriz_intersecao[i]);
+    free(similaridade->matriz_intersecao);
 
-    for (int i = 0; i < sim->n; i++) free(sim->matriz_similaridade[i]);
-    free(sim->matriz_similaridade);
+    for (int i = 0; i < similaridade->n; i++) free(similaridade->matriz_similaridade[i]);
+    free(similaridade->matriz_similaridade);
 }
 
-void similaridade_monta_matriz_compras(Similaridade *sim, const ListaCompras *lista_compras) {
-    sim->n = lista_compras->cod_clientes.size();
-    sim->m = lista_compras->nomes_produtos.size();
+void similaridade_monta_matriz_compras(Similaridade *similaridade, const ListaCompras *lista_compras) {
+    similaridade->n = lista_compras->cod_clientes.size();
+    similaridade->m = lista_compras->nomes_produtos.size();
 
-    sim->matriz_compras = (Matriz) malloc(sim->n * sizeof(int *));
-    for (int i = 0; i < sim->n; i++) {
-        sim->matriz_compras[i] = (int *) calloc(sim->m, sizeof(int));
+    similaridade->matriz_compras = (Matriz) malloc(similaridade->n * sizeof(int *));
+    for (int i = 0; i < similaridade->n; i++) {
+        similaridade->matriz_compras[i] = (int *) calloc(similaridade->m, sizeof(int));
     }
 
-    for (int i = 0; i < sim->n; i++) {
+    for (int i = 0; i < similaridade->n; i++) {
         list<int>::const_iterator it;
         for (it = lista_compras->compras[i].begin(); it != lista_compras->compras[i].end(); it++) {
-            sim->matriz_compras[i][*it] = 1;
+            similaridade->matriz_compras[i][*it] = 1;
         }
     }
 }
@@ -62,33 +62,33 @@ Matriz similaridade_multiplica_matrizes(Matriz a, int linhas_a, int colunas_a, M
     return c;
 }
 
-void similaridade_calista_comprasula(Similaridade *sim, const ListaCompras *lista_compras) {
-    similaridade_monta_matriz_compras(sim, lista_compras);
+void similaridade_calista_comprasula(Similaridade *similaridade, const ListaCompras *lista_compras) {
+    similaridade_monta_matriz_compras(similaridade, lista_compras);
 
-    Matriz transposta = similaridade_transposta(sim->matriz_compras, sim->n, sim->m);
-    sim->matriz_intersecao = similaridade_multiplica_matrizes(sim->matriz_compras, sim->n, sim->m, transposta, sim->n);
+    Matriz transposta = similaridade_transposta(similaridade->matriz_compras, similaridade->n, similaridade->m);
+    similaridade->matriz_intersecao = similaridade_multiplica_matrizes(similaridade->matriz_compras, similaridade->n, similaridade->m, transposta, similaridade->n);
 
-    for (int i = 0; i < sim->m; i++) free(transposta[i]);
+    for (int i = 0; i < similaridade->m; i++) free(transposta[i]);
     free(transposta);
 
-    sim->matriz_similaridade = (MatrizDouble) malloc(sim->n * sizeof(double *));
-    for (int i = 0; i < sim->n; i++) {
-        sim->matriz_similaridade[i] = (double *) calloc(sim->n, sizeof(double));
+    similaridade->matriz_similaridade = (MatrizDouble) malloc(similaridade->n * sizeof(double *));
+    for (int i = 0; i < similaridade->n; i++) {
+        similaridade->matriz_similaridade[i] = (double *) calloc(similaridade->n, sizeof(double));
     }
 
-    for (int i = 0; i < sim->n; i++) {
-        int total_produtos_i = sim->matriz_intersecao[i][i];
-        for (int j = 0; j < sim->n; j++) {
-            sim->matriz_similaridade[i][j] = 1.0 - (double) sim->matriz_intersecao[i][j] / total_produtos_i;
+    for (int i = 0; i < similaridade->n; i++) {
+        int total_produtos_i = similaridade->matriz_intersecao[i][i];
+        for (int j = 0; j < similaridade->n; j++) {
+            similaridade->matriz_similaridade[i][j] = 1.0 - (double) similaridade->matriz_intersecao[i][j] / total_produtos_i;
         }
     }
 }
 
-int similaridade_mais_similar(const Similaridade *sim, int indice_cliente) {
+int similaridade_mais_similar(const Similaridade *similaridade, int indice_cliente) {
     int melhor = -1;
-    for (int j = 0; j < sim->n; j++) {
+    for (int j = 0; j < similaridade->n; j++) {
         if (j == indice_cliente) continue;
-        if (melhor == -1 || sim->matriz_similaridade[indice_cliente][j] < sim->matriz_similaridade[indice_cliente][melhor]) {
+        if (melhor == -1 || similaridade->matriz_similaridade[indice_cliente][j] < similaridade->matriz_similaridade[indice_cliente][melhor]) {
             melhor = j;
         }
     }

@@ -52,28 +52,28 @@ int main(int argc, char **argv) {
             inicializaListaCompras(&lista_compras);
             if (!carregarDados(&lista_compras, caminho)) continue;
 
-            Similaridade sim;
-            inicializa_similaridade(&sim);
-            similaridade_calista_comprasula(&sim, &lista_compras);
+            Similaridade similaridade;
+            inicializaSimilaridade(&similaridade);
+            similaridade_calista_comprasula(&similaridade, &lista_compras);
 
             cout << caminho << endl;
             for (int par = 0; par < 2; par++) {
                 int a = (par == 0) ? indice1 : indice2;
                 int b = (par == 0) ? indice2 : indice1;
                 cout << "cliente " << a << " (" << lista_compras.cod_clientes[a] << "): "
-                     << "produtos=" << sim.matriz_intersecao[a][a]
-                     << ", intersecao[" << a << "][" << b << "]=" << sim.matriz_intersecao[a][b]
-                     << ", similaridade[" << a << "][" << b << "]=" << sim.matriz_similaridade[a][b]
+                     << "produtos=" << similaridade.matriz_intersecao[a][a]
+                     << ", intersecao[" << a << "][" << b << "]=" << similaridade.matriz_intersecao[a][b]
+                     << ", similaridade[" << a << "][" << b << "]=" << similaridade.matriz_similaridade[a][b]
                      << endl;
-                int mais_similar = similaridade_mais_similar(&sim, a);
+                int mais_similar = similaridade_mais_similar(&similaridade, a);
                 cout << "mais similar a " << a << ": " << mais_similar
                      << " (" << lista_compras.cod_clientes[mais_similar] << "), similaridade="
-                     << sim.matriz_similaridade[a][mais_similar]
-                     << " I[" << a << "][" << mais_similar << "]=" << sim.matriz_intersecao[a][mais_similar] 
-                     << " P[" << a << "][" << a << "]=" << sim.matriz_intersecao[a][a] 
+                     << similaridade.matriz_similaridade[a][mais_similar]
+                     << " I[" << a << "][" << mais_similar << "]=" << similaridade.matriz_intersecao[a][mais_similar] 
+                     << " P[" << a << "][" << a << "]=" << similaridade.matriz_intersecao[a][a] 
                      << endl;
             }
-            similaridade_libera(&sim);
+            freeSimilaridade(&similaridade);
         }
     }
 
@@ -85,9 +85,9 @@ int main(int argc, char **argv) {
         inicializaListaCompras(&lista_compras);
         if (!carregarDados(&lista_compras, caminho)) return 1;
 
-        Similaridade sim;
-        inicializa_similaridade(&sim);
-        similaridade_calista_comprasula(&sim, &lista_compras);
+        Similaridade similaridade;
+        inicializaSimilaridade(&similaridade);
+        similaridade_calista_comprasula(&similaridade, &lista_compras);
 
         string codigos[3];
         if (usa_defaults) {
@@ -105,12 +105,12 @@ int main(int argc, char **argv) {
         for (int i = 0; i < 3; i++) {
             int indice = getIndexCliente(&lista_compras, codigos[i]);
             cout << "recomendacoes para " << codigos[i] << " (indice interno " << indice << "):" << endl;
-            vector<ItemRanking> topk = recomendacao_top_k(&sim, &lista_compras, indice, k);
+            vector<ItemRanking> topk = recomendacao_top_k(&similaridade, &lista_compras, indice, k);
             for (int j = 0; j < (int) topk.size(); j++) {
                 cout << lista_compras.nomes_produtos[topk[j].indice_produto] << " (Rank=" << topk[j].ranqueamento << ")" << endl;
             }
         }
-        similaridade_libera(&sim);
+        freeSimilaridade(&similaridade);
     }
 
     return 0;
