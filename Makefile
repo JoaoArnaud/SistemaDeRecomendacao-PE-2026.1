@@ -8,9 +8,9 @@ TARGET := $(BUILD_DIR)/programa
 
 SOURCES := \
 	src/testador.cpp \
-	src/ListaCompras.cpp \
-	src/Similaridade.cpp \
-	src/Recomendacao.cpp
+	src/lista_compras.cpp \
+	src/similaridade.cpp \
+	src/recomendacao.cpp
 
 OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
 DEPENDENCIES := $(OBJECTS:.o=.d)
