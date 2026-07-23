@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <stdlib.h>
-#include "../include/Recomendacao.h"
+#include "../include/recomendacao.h"
 
 int *recomendacao_vizinhos(const Similaridade *sim, int indice_cliente, int *total_vizinhos) {
     int *l = (int *) malloc(sim->n * sizeof(int));

@@ -2,8 +2,8 @@
 #define RECOMENDACAO_H
 
 #include <vector>
-#include "../include/ListaCompras.h"
-#include "../include/Similaridade.h"
+#include "../include/lista_compras.h"
+#include "../include/similaridade.h"
 using namespace std;
 
 typedef struct {
