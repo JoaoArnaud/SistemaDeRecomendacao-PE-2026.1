@@ -10,7 +10,8 @@ SOURCES := \
 	src/testador.cpp \
 	src/lista_compras.cpp \
 	src/similaridade.cpp \
-	src/recomendacao.cpp
+	src/recomendacao.cpp \
+	src/menu.cpp
 
 OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
 DEPENDENCIES := $(OBJECTS:.o=.d)
