@@ -8,11 +8,11 @@
 using namespace std;
 
 typedef struct {
-    vector<string> clientes;
+    vector<string> cod_clientes;
     map<string, int> mapa_clientes;
-    vector<string> produtos;
+    vector<string> nomes_produtos;
     map<string, int> mapa_produtos;
-    vector<list<int>> compras;
+    vector<list<int>> compras; // lista de identificadores de produtos comprados por cada cliente
 } ListaCompras;
 
 void inicializa_lista_compras(ListaCompras *lc);

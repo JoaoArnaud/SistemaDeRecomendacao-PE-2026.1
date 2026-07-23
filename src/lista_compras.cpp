@@ -3,9 +3,9 @@
 #include "../include/lista_compras.h"
 
 void inicializa_lista_compras(ListaCompras *lc) {
-    lc->clientes.clear();
+    lc->cod_clientes.clear();
     lc->mapa_clientes.clear();
-    lc->produtos.clear();
+    lc->nomes_produtos.clear();
     lc->mapa_produtos.clear();
     lc->compras.clear();
 }
@@ -27,18 +27,18 @@ bool lista_compras_carrega(ListaCompras *lc, const char *caminho_arquivo) {
 
     while (fscanf(arquivo, "%*[^,],%31[^,],%15[^,],%63[^\n]\n", cod_cliente, cod_produto, nome_produto) == 3) {
         if (lc->mapa_clientes.find(cod_cliente) == lc->mapa_clientes.end()) {
-            int indice = lc->clientes.size();
-            lc->clientes.push_back(cod_cliente);
+            int indice = lc->cod_clientes.size();
+            lc->cod_clientes.push_back(cod_cliente);
             lc->mapa_clientes[cod_cliente] = indice;
         }
         if (lc->mapa_produtos.find(cod_produto) == lc->mapa_produtos.end()) {
-            int indice = lc->produtos.size();
-            lc->produtos.push_back(nome_produto);
+            int indice = lc->nomes_produtos.size();
+            lc->nomes_produtos.push_back(nome_produto);
             lc->mapa_produtos[cod_produto] = indice;
         }
     }
 
-    lc->compras.resize(lc->clientes.size());
+    lc->compras.resize(lc->cod_clientes.size());
     fclose(arquivo);
 
     arquivo = fopen(caminho_arquivo, "r");
@@ -78,6 +78,6 @@ void lista_compras_imprime_compras(const ListaCompras *lc, const string &cod_cli
     cout << "compras de " << cod_cliente << ":" << endl;
     list<int>::const_iterator it;
     for (it = lc->compras[indice].begin(); it != lc->compras[indice].end(); it++) {
-        cout << lc->produtos[*it] << endl;
+        cout << lc->nomes_produtos[*it] << endl;
     }
 }

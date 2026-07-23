@@ -21,8 +21,8 @@ void similaridade_libera(Similaridade *sim) {
 }
 
 void similaridade_monta_matriz_compras(Similaridade *sim, const ListaCompras *lc) {
-    sim->n = lc->clientes.size();
-    sim->m = lc->produtos.size();
+    sim->n = lc->cod_clientes.size();
+    sim->m = lc->nomes_produtos.size();
 
     sim->matriz_compras = (Matriz) malloc(sim->n * sizeof(int *));
     for (int i = 0; i < sim->n; i++) {

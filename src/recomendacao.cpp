@@ -16,7 +16,7 @@ int *recomendacao_vizinhos(const Similaridade *sim, int indice_cliente, int *tot
 }
 
 vector<ItemRanking> recomendacao_calcula_ranking(const Similaridade *sim, const ListaCompras *lc, int indice_cliente) {
-    int m = lc->produtos.size();
+    int m = lc->nomes_produtos.size();
     vector<ItemRanking> r(m);
     for (int p = 0; p < m; p++) {
         r[p].indice_produto = p;
