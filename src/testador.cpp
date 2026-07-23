@@ -23,15 +23,15 @@ int main(int argc, char **argv) {
     }
 
     if (entrega == "entrega1") {
-        int total_csvs = argc - 2;
-        for (int i = 0; i < (total_csvs > 0 ? total_csvs : 1); i++) {
-            const char *caminho = (total_csvs > 0) ? argv[i + 2] : "data/dados_venda_cluster_17.csv";
+        int quantidade_arquivos = argc - 2;
+        for (int i = 0; i < (quantidade_arquivos > 0 ? quantidade_arquivos : 1); i++) {
+            const char *caminho_arquivo = (quantidade_arquivos > 0) ? argv[i + 2] : "data/dados_venda_cluster_17.csv";
 
             ListaCompras lista_compras;
             inicializaListaCompras(&lista_compras);
-            if (!carregarDados(&lista_compras, caminho)) continue;
+            if (!carregarDados(&lista_compras, caminho_arquivo)) continue;
 
-            cout << caminho << endl;
+            cout << caminho_arquivo << endl;
             cout << "numero de clientes registrados: " << lista_compras.cod_clientes.size() << endl;
             cout << "numero de produtos registrados: " << lista_compras.nomes_produtos.size() << endl;
 
@@ -44,19 +44,19 @@ int main(int argc, char **argv) {
     if (entrega == "entrega2") {
         int indice1 = (argc > 2) ? atoi(argv[2]) : 0;
         int indice2 = (argc > 3) ? atoi(argv[3]) : 1;
-        int total_csvs = argc - 4;
-        for (int i = 0; i < (total_csvs > 0 ? total_csvs : 1); i++) {
-            const char *caminho = (total_csvs > 0) ? argv[i + 4] : "data/dados_venda_cluster_17.csv";
+        int quantidade_arquivos = argc - 4;
+        for (int i = 0; i < (quantidade_arquivos > 0 ? quantidade_arquivos : 1); i++) {
+            const char *caminho_arquivo = (quantidade_arquivos > 0) ? argv[i + 4] : "data/dados_venda_cluster_17.csv";
 
             ListaCompras lista_compras;
             inicializaListaCompras(&lista_compras);
-            if (!carregarDados(&lista_compras, caminho)) continue;
+            if (!carregarDados(&lista_compras, caminho_arquivo)) continue;
 
             Similaridade similaridade;
             inicializaSimilaridade(&similaridade);
             calculaMatrizSimilaridade(&similaridade, &lista_compras);
 
-            cout << caminho << endl;
+            cout << caminho_arquivo << endl;
             for (int par = 0; par < 2; par++) {
                 int a = (par == 0) ? indice1 : indice2;
                 int b = (par == 0) ? indice2 : indice1;
@@ -79,11 +79,11 @@ int main(int argc, char **argv) {
 
     if (entrega == "entrega3") {
         bool usa_defaults = (argc < 5);
-        const char *caminho = (!usa_defaults && argc > 6) ? argv[6] : "data/dados_venda_cluster_17.csv";
+        const char *caminho_arquivo = (!usa_defaults && argc > 6) ? argv[6] : "data/dados_venda_cluster_17.csv";
 
         ListaCompras lista_compras;
         inicializaListaCompras(&lista_compras);
-        if (!carregarDados(&lista_compras, caminho)) return 1;
+        if (!carregarDados(&lista_compras, caminho_arquivo)) return 1;
 
         Similaridade similaridade;
         inicializaSimilaridade(&similaridade);
@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
         int k = (!usa_defaults && argc > 5) ? atoi(argv[5]) : 3;
         if (k > (int) lista_compras.nomes_produtos.size()) k = (int) lista_compras.nomes_produtos.size();
 
-        cout << caminho << endl;
+        cout << caminho_arquivo << endl;
         for (int i = 0; i < 3; i++) {
             int indice = getIndexCliente(&lista_compras, codigos[i]);
             cout << "recomendacoes para " << codigos[i] << " (indice interno " << indice << "):" << endl;
