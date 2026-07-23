@@ -44,16 +44,16 @@ Matriz getTransposta(Matriz a, int linhas, int colunas) {
 }
 
 Matriz getProdutoMatrizes(Matriz a, int linhas_a, int colunas_a, Matriz b, int colunas_b) {
-    Matriz c = (Matriz) malloc(linhas_a * sizeof(int *));
+    Matriz matriz_interesecao = (Matriz) malloc(linhas_a * sizeof(int *));
     for (int i = 0; i < linhas_a; i++) {
-        c[i] = (int *) calloc(colunas_b, sizeof(int));
+        matriz_interesecao[i] = (int *) calloc(colunas_b, sizeof(int));
     }
 
     for (int i = 0; i < linhas_a; i++)
         for (int j = 0; j < colunas_b; j++)
             for (int k = 0; k < colunas_a; k++)
-                c[i][j] += a[i][k] * b[k][j];
-    return c;
+                matriz_interesecao[i][j] += a[i][k] * b[k][j];
+    return matriz_interesecao;
 }
 
 void calculaMatrizSimilaridade(Similaridade *similaridade, const ListaCompras *lista_compras) {
