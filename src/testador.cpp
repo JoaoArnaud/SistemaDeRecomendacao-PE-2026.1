@@ -1,8 +1,8 @@
 #include <iostream>
 #include <stdlib.h>
-#include "../include/ListaCompras.h"
-#include "../include/Similaridade.h"
-#include "../include/Recomendacao.h"
+#include "../include/lista_compras.h"
+#include "../include/similaridade.h"
+#include "../include/recomendacao.h"
 
 int main(int argc, char **argv) {
     if (argc < 2) {

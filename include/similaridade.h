@@ -1,7 +1,7 @@
 #ifndef SIMILARIDADE_H
 #define SIMILARIDADE_H
 
-#include "../include/ListaCompras.h"
+#include "../include/lista_compras.h"
 using namespace std;
 
 typedef int** Matriz;

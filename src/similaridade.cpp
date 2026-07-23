@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "../include/Similaridade.h"
+#include "../include/similaridade.h"
 
 void inicializa_similaridade(Similaridade *sim) {
     sim->n = 0;

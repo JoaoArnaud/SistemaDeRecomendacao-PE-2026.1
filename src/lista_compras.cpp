@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <iostream>
-#include "../include/ListaCompras.h"
+#include "../include/lista_compras.h"
 
 void inicializa_lista_compras(ListaCompras *lc) {
     lc->clientes.clear();
