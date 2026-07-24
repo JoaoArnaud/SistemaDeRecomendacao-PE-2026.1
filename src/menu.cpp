@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+#include <ctime>
 
 #include "../include/menu.h"
 #include "../include/lista_compras.h"
@@ -60,20 +61,33 @@ void executarEntrega2(const char *caminhoArquivo) {
     std::cout << "\nCliente " << indiceCliente1 << " (" << listaCompras.cod_clientes[indiceCliente1] << "):\n";
     std::cout << "Quantidade de produtos: " << similaridade.matriz_intersecao[indiceCliente1][indiceCliente1] << '\n';
 
+    clock_t inicio1 = clock();
+
     int indiceMaisSimilar1 = getMaisSimilar(&similaridade, indiceCliente1);
+
+    clock_t fim1 = clock();
 
     std::cout << "Cliente mais similar: " << indiceMaisSimilar1 << " (" << listaCompras.cod_clientes[indiceMaisSimilar1] << ")\n";
     std::cout << "Valor da similaridade: " << similaridade.matriz_similaridade[indiceCliente1][indiceMaisSimilar1]<< '\n';
 
     std::cout << "\nDigite o índice do segundo cliente: ";
     std::cin >> indiceCliente2;
+    
+    clock_t inicio2 = clock();
 
     int indiceMaisSimilar2 = getMaisSimilar(&similaridade, indiceCliente2);
+
+    clock_t fim2 = clock();
 
     std::cout << "Cliente mais similar: " << indiceMaisSimilar2 << " (" << listaCompras.cod_clientes[indiceMaisSimilar2] << ")\n";
     std::cout << "Valor da similaridade: " << similaridade.matriz_similaridade[indiceCliente2][indiceMaisSimilar2]<< '\n';
 
     freeSimilaridade(&similaridade);
+
+    double tempo_execucao1 = ((double) (fim1 - inicio1)) / CLOCKS_PER_SEC;
+    std::cout << "\nTempo de execução: " << tempo_execucao1 << " segundos\n";
+    double tempo_execucao2 = ((double) (fim2 - inicio2)) / CLOCKS_PER_SEC;
+    std::cout << "Tempo de execução: " << tempo_execucao2 << " segundos\n";
 }
 
 void executarEntrega3(const char *caminhoArquivo) {
