@@ -11,6 +11,7 @@ int main() {
         std::cout << "1 - Executar entrega 1\n";
         std::cout << "2 - Executar entrega 2\n";
         std::cout << "3 - Executar entrega 3\n";
+        std::cout << "4 - Executar entrega 4\n";
         std::cout << "0 - Sair\n";
         std::cout << "==========================\n";
         std::cout << "Escolha uma opção: ";
@@ -28,6 +29,10 @@ int main() {
 
             case 3:
                 executarEntrega3(caminhoArquivo);
+                break;
+
+            case 4:
+                executarEntrega4(caminhoArquivo);
                 break;
 
             case 0:
