@@ -56,7 +56,9 @@ void executarEntrega2(const char *caminhoArquivo) {
     std::cin >> indiceCliente1;
 
     Similaridade similaridade;
+    Similaridade similaridadeOtimizada;
     calculaMatrizSimilaridade(&similaridade, &listaCompras);
+    calculaMatrizSimilaridadeOtimizada(&similaridadeOtimizada, &listaCompras);
 
     std::cout << "\nCliente " << indiceCliente1 << " (" << listaCompras.cod_clientes[indiceCliente1] << "):\n";
     std::cout << "Quantidade de produtos: " << similaridade.matriz_intersecao[indiceCliente1][indiceCliente1] << '\n';
@@ -67,8 +69,16 @@ void executarEntrega2(const char *caminhoArquivo) {
 
     clock_t fim1 = clock();
 
+    clock_t inicio_otimizado1 = clock();
+
+    int indiceMaisSimilarOtimizado1 = getMaisSimilarOtimizado(&similaridadeOtimizada, indiceCliente1);
+
+    clock_t fim_otimizado1 = clock();
+
     std::cout << "Cliente mais similar: " << indiceMaisSimilar1 << " (" << listaCompras.cod_clientes[indiceMaisSimilar1] << ")\n";
     std::cout << "Valor da similaridade: " << similaridade.matriz_similaridade[indiceCliente1][indiceMaisSimilar1]<< '\n';
+    std::cout << "Cliente mais similar (otimizado): " << indiceMaisSimilarOtimizado1 << " (" << listaCompras.cod_clientes[indiceMaisSimilarOtimizado1] << ")\n";
+    std::cout << "Valor da similaridade (otimizado): " << similaridadeOtimizada.matriz_similaridade[indiceCliente1][indiceMaisSimilarOtimizado1] << '\n';
 
     std::cout << "\nDigite o índice do segundo cliente: ";
     std::cin >> indiceCliente2;
@@ -79,15 +89,28 @@ void executarEntrega2(const char *caminhoArquivo) {
 
     clock_t fim2 = clock();
 
+    clock_t inicio_otimizado2 = clock();
+
+    int indiceMaisSimilarOtimizado2 = getMaisSimilarOtimizado(&similaridadeOtimizada, indiceCliente2);
+
+    clock_t fim_otimizado2 = clock();
+
     std::cout << "Cliente mais similar: " << indiceMaisSimilar2 << " (" << listaCompras.cod_clientes[indiceMaisSimilar2] << ")\n";
     std::cout << "Valor da similaridade: " << similaridade.matriz_similaridade[indiceCliente2][indiceMaisSimilar2]<< '\n';
+    std::cout << "Cliente mais similar (otimizado): " << indiceMaisSimilarOtimizado2 << " (" << listaCompras.cod_clientes[indiceMaisSimilarOtimizado2] << ")\n";
+    std::cout << "Valor da similaridade (otimizado): " << similaridadeOtimizada.matriz_similaridade[indiceCliente2][indiceMaisSimilarOtimizado2] << '\n';
 
     freeSimilaridade(&similaridade);
+    freeSimilaridade(&similaridadeOtimizada);
 
     double tempo_execucao1 = ((double) (fim1 - inicio1)) / CLOCKS_PER_SEC;
-    std::cout << "\nTempo de execução: " << tempo_execucao1 << " segundos\n";
+    std::cout << "\nTempo de execução 1: " << tempo_execucao1 << " segundos\n";
+    double tempo_execucao_otimizado1 = ((double) (fim_otimizado1 - inicio_otimizado1)) / CLOCKS_PER_SEC;
+    std::cout << "Tempo de execução otimizado 1: " << tempo_execucao_otimizado1 << " segundos\n";
     double tempo_execucao2 = ((double) (fim2 - inicio2)) / CLOCKS_PER_SEC;
-    std::cout << "Tempo de execução: " << tempo_execucao2 << " segundos\n";
+    std::cout << "Tempo de execução 2: " << tempo_execucao2 << " segundos\n";
+    double tempo_execucao_otimizado2 = ((double) (fim_otimizado2 - inicio_otimizado2)) / CLOCKS_PER_SEC;
+    std::cout << "Tempo de execução otimizado 2: " << tempo_execucao_otimizado2 << " segundos\n";
 }
 
 void executarEntrega3(const char *caminhoArquivo) {

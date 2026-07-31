@@ -30,30 +30,30 @@ void geraMatrizCompras(Similaridade *similaridade, const ListaCompras *lista_com
     }
 }
 
-// Matriz getTransposta(Matriz a, int linhas, int colunas) {
-//     Matriz transposta = (Matriz) malloc(colunas * sizeof(int *)); // todo: otimizar alocação da matriz transposta
-//     for (int j = 0; j < colunas; j++) {
-//         transposta[j] = (int *) calloc(linhas, sizeof(int));
-//     }
+Matriz getTransposta(Matriz a, int linhas, int colunas) {
+    Matriz transposta = (Matriz) malloc(colunas * sizeof(int *));
+    for (int j = 0; j < colunas; j++) {
+        transposta[j] = (int *) calloc(linhas, sizeof(int));
+    }
 
-//     for (int i = 0; i < linhas; i++)
-//         for (int j = 0; j < colunas; j++)
-//             transposta[j][i] = a[i][j];
-//     return transposta;
-// }
+    for (int i = 0; i < linhas; i++)
+        for (int j = 0; j < colunas; j++)
+            transposta[j][i] = a[i][j];
+    return transposta;
+}
 
-// Matriz getProdutoMatrizes(Matriz a, int linhas_a, int colunas_a, Matriz b, int colunas_b) {
-//     Matriz matriz_interesecao = (Matriz) malloc(linhas_a * sizeof(int *));
-//     for (int i = 0; i < linhas_a; i++) {
-//         matriz_interesecao[i] = (int *) calloc(colunas_b, sizeof(int));
-//     }
+Matriz getProdutoMatrizes(Matriz a, int linhas_a, int colunas_a, Matriz b, int colunas_b) {
+    Matriz matriz_intersecao = (Matriz) malloc(linhas_a * sizeof(int *));
+    for (int i = 0; i < linhas_a; i++) {
+        matriz_intersecao[i] = (int *) calloc(colunas_b, sizeof(int));
+    }
 
-//     for (int i = 0; i < linhas_a; i++)
-//         for (int j = 0; j < colunas_b; j++)
-//             for (int k = 0; k < colunas_a; k++)
-//                 matriz_interesecao[i][j] += a[i][k] * b[k][j];
-//     return matriz_interesecao;
-// }
+    for (int i = 0; i < linhas_a; i++)
+        for (int j = 0; j < colunas_b; j++)
+            for (int k = 0; k < colunas_a; k++)
+                matriz_intersecao[i][j] += a[i][k] * b[k][j];
+    return matriz_intersecao;
+}
 
 Matriz getMatrizIntersecao(Matriz matriz_compras, int quantidade_clientes, int quantidade_produtos) {
     Matriz matriz_intersecao = (Matriz) malloc(quantidade_clientes * sizeof(int *));
@@ -81,6 +81,28 @@ Matriz getMatrizIntersecao(Matriz matriz_compras, int quantidade_clientes, int q
 void calculaMatrizSimilaridade(Similaridade *similaridade, const ListaCompras *lista_compras) {
     geraMatrizCompras(similaridade, lista_compras);
 
+    Matriz transposta = getTransposta(similaridade->matriz_compras, similaridade->linha_matriz, similaridade->coluna_matriz);
+    similaridade->matriz_intersecao = getProdutoMatrizes(similaridade->matriz_compras, similaridade->linha_matriz, similaridade->coluna_matriz, transposta, similaridade->linha_matriz);
+
+    for (int i = 0; i < similaridade->coluna_matriz; i++) free(transposta[i]);
+    free(transposta);
+
+    similaridade->matriz_similaridade = (MatrizDouble) malloc(similaridade->linha_matriz * sizeof(double *));
+    for (int i = 0; i < similaridade->linha_matriz; i++) {
+        similaridade->matriz_similaridade[i] = (double *) calloc(similaridade->linha_matriz, sizeof(double));
+    }
+
+    for (int i = 0; i < similaridade->linha_matriz; i++) {
+        int total_produtos_i = similaridade->matriz_intersecao[i][i];
+        for (int j = 0; j < similaridade->linha_matriz; j++) {
+            similaridade->matriz_similaridade[i][j] = 1.0 - (double) similaridade->matriz_intersecao[i][j] / total_produtos_i;
+        }
+    }
+}
+
+void calculaMatrizSimilaridadeOtimizada(Similaridade *similaridade, const ListaCompras *lista_compras) {
+    geraMatrizCompras(similaridade, lista_compras);
+
     similaridade->matriz_intersecao = getMatrizIntersecao(similaridade->matriz_compras, similaridade->linha_matriz, similaridade->coluna_matriz);
 
     similaridade->matriz_similaridade = (MatrizDouble) malloc(similaridade->linha_matriz * sizeof(double *));
@@ -97,6 +119,17 @@ void calculaMatrizSimilaridade(Similaridade *similaridade, const ListaCompras *l
 }
 
 int getMaisSimilar(const Similaridade *similaridade, int indice_cliente) {
+    int melhor = -1;
+    for (int j = 0; j < similaridade->linha_matriz; j++) {
+        if (j == indice_cliente) continue;
+        if (melhor == -1 || similaridade->matriz_similaridade[indice_cliente][j] < similaridade->matriz_similaridade[indice_cliente][melhor]) {
+            melhor = j;
+        }
+    }
+    return melhor;
+}
+
+int getMaisSimilarOtimizado(const Similaridade *similaridade, int indice_cliente) {
     int melhor = -1;
     for (int j = 0; j < similaridade->linha_matriz; j++) {
         if (j == indice_cliente) continue;
