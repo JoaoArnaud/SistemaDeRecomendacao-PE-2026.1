@@ -1,12 +1,15 @@
 #include <iostream>
 #include <stdlib.h>
+#include <ctime>
 
 #include "../include/lista_compras.h"
 #include "../include/similaridade.h"
 #include "../include/recomendacao.h"
 
-int main(const char *caminho_arquivo) {
+int main() {
     const char *caminho_arquivo = "data/dados_venda_cluster_17.csv";
+    clock_t inicio = clock();
+
     ListaCompras lista_compras;
     inicializaListaCompras(&lista_compras);
 
@@ -38,5 +41,10 @@ int main(const char *caminho_arquivo) {
 
     free(topk_recomendacoes);
     freeSimilaridadeCSR(&similaridade);
+
+    clock_t fim = clock();
+    double tempo_execucao = (double) (fim - inicio) / CLOCKS_PER_SEC;
+    std::cout << "Tempo de execucao: " << tempo_execucao << " segundos\n";
+
     return 0;
 }

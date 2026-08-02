@@ -37,7 +37,7 @@ MatrizCSR geraMatrizComprasCSR(const ListaCompras *lista_compras) {
         std::sort(produtos.begin(), produtos.end());
         produtos.erase(std::unique(produtos.begin(), produtos.end()), produtos.end());
 
-        for (int j = 0; j < produtos.size(); j++) {
+        for (int j = 0; j < (int) produtos.size(); j++) {
             values.push_back(1);
             col_index.push_back(produtos[j]);
         }
