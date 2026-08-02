@@ -138,11 +138,7 @@ void calculaMatrizSimilaridadeCSR(SimilaridadeCSR *similaridade, const ListaComp
 }
 
 double getValorSimilaridadeCSR(const SimilaridadeCSR *similaridade, int indice_cliente_i, int indice_cliente_j) {
-    int total_produtos_i = getValorMatrizCSR(
-        &similaridade->matriz_intersecao,
-        indice_cliente_i,
-        indice_cliente_i
-    );
+    int total_produtos_i = getValorMatrizCSR(&similaridade->matriz_intersecao, indice_cliente_i, indice_cliente_i);
 
     if (total_produtos_i == 0) return 1.0;
 
@@ -177,11 +173,4 @@ int getMaisSimilarCSR(const SimilaridadeCSR *similaridade, int indice_cliente) {
     }
 
     return melhor;
-}
-
-size_t getMemoriaMatrizCSR(const MatrizCSR *matriz) {
-    size_t memoria_values = matriz->quantidade_nao_nulos * sizeof(int);
-    size_t memoria_col_index = matriz->quantidade_nao_nulos * sizeof(int);
-    size_t memoria_row_ptr = (matriz->linhas + 1) * sizeof(int);
-    return memoria_values + memoria_col_index + memoria_row_ptr;
 }

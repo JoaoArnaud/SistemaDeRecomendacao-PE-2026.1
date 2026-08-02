@@ -28,6 +28,5 @@ int getValorMatrizCSR(const MatrizCSR *matriz, int linha, int coluna);
 void calculaMatrizSimilaridadeCSR(SimilaridadeCSR *similaridade, const ListaCompras *lista_compras);
 double getValorSimilaridadeCSR(const SimilaridadeCSR *similaridade, int indice_cliente_i, int indice_cliente_j);
 int getMaisSimilarCSR(const SimilaridadeCSR *similaridade, int indice_cliente);
-size_t getMemoriaMatrizCSR(const MatrizCSR *matriz);
 
 #endif
