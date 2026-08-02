@@ -9,9 +9,9 @@ typedef struct {
     double ranqueamento;
 } ItemRanking;
 
-int *getListaVizinhos(const Similaridade *similaridade, int indice_cliente, int *total_vizinhos);
-ItemRanking *recomendacao_calcula_ranking(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente);
+int *getListaVizinhos(const SimilaridadeCSR *similaridade, int indice_cliente, int *total_vizinhos);
+ItemRanking *recomendacao_calcula_ranking(const SimilaridadeCSR *similaridade, const ListaCompras *lista_compras, int indice_cliente);
 bool comparaRanking(const ItemRanking &a, const ItemRanking &b);
-ItemRanking *getTopKRecomendacoes(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k);
+ItemRanking *getTopKRecomendacoes(const SimilaridadeCSR *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k);
 
 #endif

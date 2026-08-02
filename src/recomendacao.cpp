@@ -3,20 +3,25 @@
 #include "../include/recomendacao.h"
 using namespace std;
 
-int *getListaVizinhos(const Similaridade *similaridade, int indice_cliente, int *total_vizinhos) {
+int *getListaVizinhos(const SimilaridadeCSR *similaridade, int indice_cliente, int *total_vizinhos) {
     int *lista_vizinhos = (int *) malloc(similaridade->linha_matriz * sizeof(int));
     *total_vizinhos = 0;
-    for (int j = 0; j < similaridade->linha_matriz; j++) {
+
+    int inicio = similaridade->matriz_intersecao.row_ptr[indice_cliente];
+    int fim = similaridade->matriz_intersecao.row_ptr[indice_cliente + 1];
+
+    for (int k = inicio; k < fim; k++) {
+        int j = similaridade->matriz_intersecao.col_index[k];
         if (j == indice_cliente) continue;
-        if (similaridade->matriz_similaridade[indice_cliente][j] < 1.0) {
-            lista_vizinhos[*total_vizinhos] = j;
-            (*total_vizinhos)++;
-        }
+
+        lista_vizinhos[*total_vizinhos] = j;
+        (*total_vizinhos)++;
     }
+
     return lista_vizinhos;
 }
 
-ItemRanking *recomendacao_calcula_ranking(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente) {
+ItemRanking *recomendacao_calcula_ranking(const SimilaridadeCSR *similaridade, const ListaCompras *lista_compras, int indice_cliente) {
     int m = lista_compras->nomes_produtos.size();
     ItemRanking *r = (ItemRanking *) malloc(m * sizeof(ItemRanking));
     for (int p = 0; p < m; p++) {
@@ -28,11 +33,21 @@ ItemRanking *recomendacao_calcula_ranking(const Similaridade *similaridade, cons
     int *vizinhos = getListaVizinhos(similaridade, indice_cliente, &total_vizinhos);
     for (int i = 0; i < total_vizinhos; i++) {
         int s = vizinhos[i];
-        for (int p = 0; p < m; p++) {
-            bool s_comprou = similaridade->matriz_compras[s][p] == 1;
-            bool c_nao_comprou = similaridade->matriz_compras[indice_cliente][p] == 0;
-            if (s_comprou && c_nao_comprou) {
-                r[p].ranqueamento *= similaridade->matriz_similaridade[indice_cliente][s];
+        double valor_similaridade = getValorSimilaridadeCSR(similaridade, indice_cliente, s);
+
+        int inicio = similaridade->matriz_compras.row_ptr[s];
+        int fim = similaridade->matriz_compras.row_ptr[s + 1];
+
+        for (int k = inicio; k < fim; k++) {
+            int p = similaridade->matriz_compras.col_index[k];
+            bool cliente_nao_comprou = getValorMatrizCSR(
+                &similaridade->matriz_compras,
+                indice_cliente,
+                p
+            ) == 0;
+
+            if (cliente_nao_comprou) {
+                r[p].ranqueamento *= valor_similaridade;
             }
         }
     }
@@ -48,11 +63,12 @@ bool comparaRanking(const ItemRanking &a, const ItemRanking &b) {
     return a.indice_produto < b.indice_produto;
 }
 
-ItemRanking *getTopKRecomendacoes(const Similaridade *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k) {
+ItemRanking *getTopKRecomendacoes(const SimilaridadeCSR *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k) {
     int m = lista_compras->nomes_produtos.size();
     ItemRanking *r = recomendacao_calcula_ranking(similaridade, lista_compras, indice_cliente);
     sort(r, r + m, comparaRanking);
 
+    if (k < 0) k = 0;
     if (k > m) k = m;
     ItemRanking *topk = (ItemRanking *) malloc(k * sizeof(ItemRanking));
     for (int j = 0; j < k; j++) topk[j] = r[j];

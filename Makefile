@@ -7,11 +7,10 @@ BUILD_DIR := build
 TARGET := $(BUILD_DIR)/programa
 
 SOURCES := \
-	src/testador.cpp \
+	src/main.cpp \
 	src/lista_compras.cpp \
 	src/similaridade.cpp \
-	src/recomendacao.cpp \
-	src/menu.cpp
+	src/recomendacao.cpp
 
 OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
 DEPENDENCIES := $(OBJECTS:.o=.d)
@@ -30,7 +29,7 @@ $(BUILD_DIR):
 	mkdir -p $@
 
 run: $(TARGET)
-	./$(TARGET) $(if $(ARGS),$(ARGS),entrega1)
+	./$(TARGET)
 
 clean:
 	$(RM) -r $(BUILD_DIR)

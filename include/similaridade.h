@@ -2,26 +2,32 @@
 #define SIMILARIDADE_H
 
 #include "../include/lista_compras.h"
+#include <stddef.h>
 
-typedef int** Matriz;
-typedef double** MatrizDouble;
+typedef struct MatrizCSR {
+    int linhas = 0;
+    int colunas = 0;
+    int quantidade_nao_nulos = 0;
+    int *values = nullptr;
+    int *col_index = nullptr;
+    int *row_ptr = nullptr;
+} MatrizCSR;
 
-typedef struct {
+typedef struct SimilaridadeCSR {
     int linha_matriz = 0;
     int coluna_matriz = 0;
-    Matriz matriz_compras = nullptr;
-    Matriz matriz_intersecao = nullptr;
-    MatrizDouble matriz_similaridade = nullptr;
-} Similaridade;
+    MatrizCSR matriz_compras;
+    MatrizCSR matriz_intersecao;
+} SimilaridadeCSR;
 
-void freeSimilaridade(Similaridade *similaridade);
-void geraMatrizCompras(Similaridade *similaridade, const ListaCompras *lista_compras);
-Matriz getTransposta(Matriz a, int linhas, int colunas);
-Matriz getProdutoMatrizes(Matriz a, int linhas_a, int colunas_a, Matriz b, int colunas_b);
-Matriz getMatrizIntersecao(Matriz matriz_compras, int quantidade_clientes, int quantidade_produtos);
-void calculaMatrizSimilaridade(Similaridade *similaridade, const ListaCompras *lista_compras);
-void calculaMatrizSimilaridadeOtimizada(Similaridade *similaridade, const ListaCompras *lista_compras);
-int getMaisSimilar(const Similaridade *similaridade, int indice_cliente);
-int getMaisSimilarOtimizado(const Similaridade *similaridade, int indice_cliente);
+void freeMatrizCSR(MatrizCSR *matriz);
+void freeSimilaridadeCSR(SimilaridadeCSR *similaridade);
+MatrizCSR geraMatrizComprasCSR(const ListaCompras *lista_compras);
+MatrizCSR getMatrizIntersecaoCSR(const MatrizCSR *matriz_compras);
+int getValorMatrizCSR(const MatrizCSR *matriz, int linha, int coluna);
+void calculaMatrizSimilaridadeCSR(SimilaridadeCSR *similaridade, const ListaCompras *lista_compras);
+double getValorSimilaridadeCSR(const SimilaridadeCSR *similaridade, int indice_cliente_i, int indice_cliente_j);
+int getMaisSimilarCSR(const SimilaridadeCSR *similaridade, int indice_cliente);
+size_t getMemoriaMatrizCSR(const MatrizCSR *matriz);
 
 #endif
