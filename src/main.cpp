@@ -15,7 +15,7 @@ int main() {
 
     if (!carregarDados(&lista_compras, caminho_arquivo)) {
         std::cerr << "Erro ao carregar os dados do arquivo: " << caminho_arquivo << std::endl;
-        return;
+        return 1;
     }
 
     SimilaridadeCSR similaridade;
