@@ -1,0 +1,4 @@
+packaging==26.3
+pybind11==3.0.4
+setuptools==83.0.0
+wheel==0.47.0
