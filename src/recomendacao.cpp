@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <stdlib.h>
 #include "../include/recomendacao.h"
-using namespace std;
 
 int *getListaVizinhos(const SimilaridadeCSR *similaridade, int indice_cliente, int *total_vizinhos) {
     int *lista_vizinhos = (int *) malloc(similaridade->linha_matriz * sizeof(int));
@@ -66,7 +65,7 @@ bool comparaRanking(const ItemRanking &a, const ItemRanking &b) {
 ItemRanking *getTopKRecomendacoes(const SimilaridadeCSR *similaridade, const ListaCompras *lista_compras, int indice_cliente, int k) {
     int m = lista_compras->nomes_produtos.size();
     ItemRanking *r = recomendacao_calcula_ranking(similaridade, lista_compras, indice_cliente);
-    sort(r, r + m, comparaRanking);
+    std::sort(r, r + m, comparaRanking);
 
     if (k < 0) k = 0;
     if (k > m) k = m;
